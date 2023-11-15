@@ -1,8 +1,27 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
-import e from 'express';
 
-class Item extends Model { }
+interface ItemAttributes {
+  id: number;
+  name: string;
+  type: string;
+  unitSize: number;
+  brand: string;
+  price: number;
+  pricePerUnit: number;
+}
+
+type ItemCreationAttributes = Optional<ItemAttributes, 'id'>;
+
+class Item extends Model<ItemAttributes, ItemCreationAttributes> {
+  declare id: number;
+  declare name: string;
+  declare type: string;
+  declare unitSize: number;
+  declare brand: string;
+  declare price: number;
+  declare pricePerUnit: number;
+}
 Item.init({
   id: {
     type: DataTypes.INTEGER,
@@ -13,7 +32,7 @@ Item.init({
     type: DataTypes.TEXT,
     allowNull: false
   },
-  incredientType: {
+  type: {
     type: DataTypes.ENUM,
     values: [
       'meat', 'vegetable', 'spice', 'other', 'rice',

@@ -1,7 +1,21 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 
-class RecipeToIncredient extends Model { }
+interface RecipeToIncredientAttributes {
+  id: number;
+  recipeId: number;
+  ingredientId: number;
+  ammount: number;
+}
+
+type RecipeToIncredientCreationAttributes = Optional<RecipeToIncredientAttributes, 'id'>;
+
+class RecipeToIncredient extends Model<RecipeToIncredientAttributes, RecipeToIncredientCreationAttributes> {
+  declare id: number;
+  declare recipeId: number;
+  declare ingredientId: number;
+  declare ammount: number;
+}
 RecipeToIncredient.init({
   id: {
     type: DataTypes.INTEGER,
@@ -16,7 +30,7 @@ RecipeToIncredient.init({
       key: 'id'
     },
   },
-  incredientId: {
+  ingredientId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -24,7 +38,7 @@ RecipeToIncredient.init({
       key: 'id'
     },
   },
-  amount: {
+  ammount: {
     type: DataTypes.INTEGER,
     allowNull: false
   }

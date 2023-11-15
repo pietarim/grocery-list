@@ -2,12 +2,12 @@ import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../config/db';
 import { IngredientCategory } from '../types';
 
-class Incredient extends Model {
+class Ingredient extends Model { // TODO prety sure this is not needed
   public id!: number;
   public name!: string;
-  public incredientType!: string;
+  public type!: string;
 }
-Incredient.init({
+Ingredient.init({
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -27,4 +27,4 @@ Incredient.init({
   modelName: 'incredient',
 });
 
-export { Incredient };
+export { Ingredient };

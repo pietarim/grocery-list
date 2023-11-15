@@ -1,7 +1,23 @@
-import { Model, DataTypes, Sequelize, QueryTypes } from 'sequelize';
+import { Model, DataTypes, Sequelize, QueryTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 
-class User extends Model { }
+interface UserAttributes {
+  id: number;
+  username: string;
+  email: string;
+  passwordHash: string;
+  isAdmin: boolean;
+}
+
+type UserCreationAttributes = Optional<UserAttributes, 'id'>;
+
+class User extends Model<UserAttributes, UserCreationAttributes> {
+  declare id: number;
+  declare username: string;
+  declare email: string;
+  declare passwordHash: string;
+  declare isAdmin: boolean;
+}
 
 User.init({
   id: {
@@ -25,10 +41,14 @@ User.init({
   passwordHash: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  isAdmin: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false
   }
 }, {
   sequelize,
   modelName: 'user',
 });
 
-module.exports = User;
+export { User };

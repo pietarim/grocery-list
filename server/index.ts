@@ -1,5 +1,6 @@
 import express from 'express';
 import config from './config/config';
+import userRouter from './routes/users';
 const { Model, DataTypes, Sequelize, QueryTypes } = require('sequelize');
 
 const app = express();
@@ -29,6 +30,8 @@ app.get('/ping', (_req, res) => {
   console.log('someone pinged here');
   res.send('pong');
 });
+
+app.use('/api/users', userRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

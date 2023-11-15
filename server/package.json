@@ -1,24 +1,33 @@
 {
-  "name": "crocery-app",
+  "name": "grocery-app",
   "version": "1.0.0",
-  "description": "Add croceries to shopping list from recipes",
+  "description": "Add groceries to shopping list from recipes",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node src/index.ts",
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "local:db": "docker run -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 postgres",
+    "db:dev-data": "ts-node config/devInitQueries.ts"
   },
   "author": "Pietari Murtomäki",
   "license": "SEE LICENSE IN readme.md",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^4.17.21",
     "@types/node": "^20.9.0",
     "@types/validator": "^13.11.6",
+    "nodemon": "^3.0.1",
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",
-    "sequelize": "^6.34.0",
-    "sequelize-typescript": "^2.1.5"
+    "sequelize": "^6.35.0",
+    "sequelize-typescript": "^2.1.5",
+    "umzug": "^3.4.0"
   }
 }
