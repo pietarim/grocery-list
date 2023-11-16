@@ -1,4 +1,4 @@
-export enum IngredientCategory {
+export enum ItemCategory {
   Meat = 'meat',
   Vegetable = 'vegetable',
   Fruit = 'fruit',
@@ -15,19 +15,19 @@ export enum IngredientCategory {
   Baking = 'baking'
 }
 
-/* export interface NewIngredient {
+/* export interface NewItem {
   name: string;
-  ingredientCategory: IngredientCategory;
+  itemCategory: ItemCategory;
 } */
 
-export interface NewIngredient {
+export interface NewItem {
   name: string;
   ammount: number;
   id: number;
 }
 
-export interface NewRecipeToIngredient {
+export interface NewRecipeToItem {
   recipeId: number;
-  ingredientId: number;
+  itemId: number;
   ammount: number;
 }

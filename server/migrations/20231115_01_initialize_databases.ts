@@ -1,6 +1,7 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes, QueryInterface, Sequelize } from 'sequelize';
 
-export const up = async ({ context: queryInterface }) => {
+export const up = async ({ context: queryInterface }: { context: QueryInterface; }) => {
+  console.log('m 11111111');
   await queryInterface.createTable('users', {
     id: {
       type: DataTypes.INTEGER,
@@ -25,9 +26,19 @@ export const up = async ({ context: queryInterface }) => {
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },
-  })
-
-  await queryInterface.createTable('recipe', {
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    },
+  });
+  console.log('m 22222222');
+  await queryInterface.createTable('recipes', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -53,9 +64,19 @@ export const up = async ({ context: queryInterface }) => {
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },
-  })
-
-  await queryInterface.createTable('item', {
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    },
+  });
+  console.log('m 33333333');
+  await queryInterface.createTable('items', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -70,22 +91,32 @@ export const up = async ({ context: queryInterface }) => {
       allowNull: false,
     },
     unitSize: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: false,
     },
-    bramd: {
+    brand: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     price: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
     },
-    priceUnit: {
-      type: DataTypes.INTEGER,
+    pricePerUnit: {
+      type: DataTypes.DECIMAL
     },
-  })
-
-  await queryInterface.createTable('recipeIngredient', {
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    },
+  });
+  console.log('m 44444444');
+  await queryInterface.createTable('recipeToItems', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -95,25 +126,35 @@ export const up = async ({ context: queryInterface }) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'recipe',
+        model: 'recipes',
         key: 'id',
       },
     },
-    ingredientId: {
+    itemId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'ingredient',
+        model: 'items',
         key: 'id',
       },
     },
     ammount: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: false,
     },
-  })
-
-  await queryInterface.createTable('recipeLike', {
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    },
+  });
+  console.log('m 55555555');
+  await queryInterface.createTable('recipeLikes', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -123,7 +164,7 @@ export const up = async ({ context: queryInterface }) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'recipe',
+        model: 'recipes',
         key: 'id',
       },
     },
@@ -135,5 +176,24 @@ export const up = async ({ context: queryInterface }) => {
         key: 'id',
       },
     },
-  })
-}
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    },
+  });
+  console.log('m 66666666');
+};
+
+export const down = async ({ context: queryInterface }: { context: QueryInterface; }) => {
+  await queryInterface.dropTable('recipeLikes');
+  await queryInterface.dropTable('recipeToItems');
+  await queryInterface.dropTable('items');
+  await queryInterface.dropTable('recipes');
+  await queryInterface.dropTable('users');
+};

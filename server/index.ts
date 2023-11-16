@@ -1,6 +1,10 @@
+require('express-async-errors');
 import express from 'express';
 import config from './config/config';
-import userRouter from './routes/users';
+import { userRouter, recipeRouter, itemRouter } from './routes';
+/* import userRouter from './routes/user';
+import recipeRouter from './routes/recipe';
+import itemRouter from './routes/item'; */
 const { Model, DataTypes, Sequelize, QueryTypes } = require('sequelize');
 
 const app = express();
@@ -26,12 +30,15 @@ const main = async () => {
 
 main();
 
+app.use(express.json());
 app.get('/ping', (_req, res) => {
   console.log('someone pinged here');
   res.send('pong');
 });
 
 app.use('/api/users', userRouter);
+app.use('/api/recipes', recipeRouter);
+app.use('/api/items', itemRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

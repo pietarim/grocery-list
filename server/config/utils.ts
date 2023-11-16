@@ -1,14 +1,16 @@
-import { NewIngredient, IngredientCategory } from '../types';
+import { NewItem, ItemCategory } from '../types';
 
-export const parseIncredient = (ingredient: unknown): NewIngredient => {
+export const parseIncredient = (item: unknown): NewItem => {
   if (
-    typeof ingredient === 'object' &&
-    ingredient !== null &&
-    'name' in ingredient &&
-    'ammount' in ingredient &&
-    'id' in ingredient
+    typeof item === 'object' &&
+    item !== null &&
+    'name' in item &&
+    'ammount' in item &&
+    'id' in item
   ) {
-    const ing = ingredient as { name: unknown, ammount: unknown, id: unknown; };
+    const ing = item as {
+      name: unknown, ammount: unknown, id: unknown;
+    };
 
     if (typeof ing.name !== 'string') {
       throw new Error('Invalid incredient name');
@@ -27,24 +29,24 @@ export const parseIncredient = (ingredient: unknown): NewIngredient => {
   throw new Error('Invalid incredient');
 };
 
-/* export const parseIncredient = (ingredient: unknown): NewIngredient => {
+/* export const parseIncredient = (: unknown): NewItem => {
   if (
-    typeof ingredient === 'object' &&
-    ingredient !== null &&
-    'name' in ingredient &&
-    'ingredientCategory' in ingredient
+    typeof  === 'object' &&
+     !== null &&
+    'name' in  &&
+    'itemCategory' in 
   ) {
-    const ing = ingredient as { name: unknown, ingredientCategory: unknown; };
+    const ing =  as { name: unknown, itemCategory: unknown; };
 
     if (typeof ing.name !== 'string') {
       throw new Error('Invalid incredient name');
     }
 
     if (
-      typeof ing.ingredientCategory === 'string' &&
-      Object.values(IngredientCategory).includes(ing.ingredientCategory as IngredientCategory)
+      typeof ing.itemCategory === 'string' &&
+      Object.values(ItemCategory).includes(ing.itemCategory as ItemCategory)
     ) {
-      return ing as NewIngredient;
+      return ing as NewItem;
     }
   }
 

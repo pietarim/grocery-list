@@ -6,9 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/index.ts",
-    "dev": "nodemon --exec ts-node src/index.ts",
+    "dev": "nodemon --exec ts-node ./index.ts",
     "local:db": "docker run -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 postgres",
-    "db:dev-data": "ts-node config/devInitQueries.ts"
+    "db:dev-data": "ts-node config/devInitQueries.ts",
+    "db:rollback": "ts-node config/rollBackMigrations.ts"
   },
   "author": "Pietari Murtomäki",
   "license": "SEE LICENSE IN readme.md",
@@ -24,6 +25,7 @@
     "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
     "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.35.0",

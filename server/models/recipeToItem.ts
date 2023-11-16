@@ -1,22 +1,22 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 
-interface RecipeToIncredientAttributes {
+interface RecipeToItemAttributes {
   id: number;
   recipeId: number;
-  ingredientId: number;
+  itemId: number;
   ammount: number;
 }
 
-type RecipeToIncredientCreationAttributes = Optional<RecipeToIncredientAttributes, 'id'>;
+type RecipeToItemCreationAttributes = Optional<RecipeToItemAttributes, 'id'>; // TODO: is this needed?
 
-class RecipeToIncredient extends Model<RecipeToIncredientAttributes, RecipeToIncredientCreationAttributes> {
+class RecipeToItem extends Model<RecipeToItemAttributes, RecipeToItemCreationAttributes> {
   declare id: number;
   declare recipeId: number;
-  declare ingredientId: number;
+  declare itemId: number;
   declare ammount: number;
 }
-RecipeToIncredient.init({
+RecipeToItem.init({
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -30,7 +30,7 @@ RecipeToIncredient.init({
       key: 'id'
     },
   },
-  ingredientId: {
+  itemId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -39,12 +39,12 @@ RecipeToIncredient.init({
     },
   },
   ammount: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.DECIMAL,
     allowNull: false
   }
 }, {
   sequelize,
-  modelName: 'recipeToIncredient',
+  modelName: 'recipeToItem',
 });
 
-export { RecipeToIncredient };
+export { RecipeToItem };

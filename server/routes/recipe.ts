@@ -11,3 +11,5 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   await createRecipe(req, res);
 });
+
+export default router;

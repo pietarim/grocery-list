@@ -1,26 +1,9 @@
 import { Sequelize } from 'sequelize';
 import { Model, DataTypes } from "sequelize";
-import { User, Recipe, RecipeToIncredient, Item } from "../models/index";
+import { User, Recipe, RecipeToItem, Item } from "../models/index";
 import { Umzug, SequelizeStorage } from 'umzug';
 
 const sequelize = new Sequelize('postgres://postgres:mysecretpassword@localhost:5432/postgres'); //5432
-
-const connectToDatabase = async () => {
-  console.log('connecting to the database connecting to the database connecting to the database connecting to the database ');
-  try {
-    await sequelize.authenticate();
-    await runMigrations();
-    console.log('3333333');
-    console.log('connected to the database connected to the database connected to the database connected to the database ');
-  } catch (err) {
-    console.log('err err err err err err');
-    console.log(err);
-    console.log('failed to connect to the database');
-    return process.exit(1);
-  }
-
-  return null;
-};
 
 const migrationConf = {
   migrations: {
@@ -32,18 +15,29 @@ const migrationConf = {
 };
 
 const runMigrations = async () => {
-  console.log('11111');
   const migrator = new Umzug(migrationConf);
-  console.log('22222');
   const migrations = await migrator.up();
-  console.log('33333');
   console.log('Migrations up to date', {
     files: migrations.map((mig) => mig.name),
   });
 };
 
-connectToDatabase();
+const connectToDatabase = async () => {
+  console.log('connecting to the database connecting to the database');
+  try {
+    await sequelize.authenticate();
+    await runMigrations();
+    console.log('connected to the database connected to the database');
+  } catch (err) {
+    console.log('err err err err err err');
+    console.log(err);
+    return process.exit(1);
+  }
 
+  return null;
+};
+
+/* connectToDatabase(); */
 const main = async () => {
   try {
     await sequelize.authenticate();
@@ -54,21 +48,20 @@ const main = async () => {
 
 main();
 const init = async () => {
-  console.log('1111111');
   const user = await User.create({
     username: "test",
     email: "user@gmail.com",
     passwordHash: "password",
     isAdmin: false,
   });
-  console.log('2222222');
+
   const user1 = await User.create({
     username: "test1",
     email: "user1@gmail.com",
     passwordHash: "password",
     isAdmin: false,
   });
-  console.log('3333333');
+
   const fish = await Item.create({
     name: "muikut öljyssä",
     type: "fish",
@@ -77,7 +70,7 @@ const init = async () => {
     price: 1.99,
     pricePerUnit: 13.27,
   });
-  console.log('4444444');
+
   const oat = await Item.create({
     name: "kaurahiutale",
     type: "other",
@@ -87,7 +80,7 @@ const init = async () => {
     pricePerUnit: 1.99,
   });
 
-  console.log('5555555');
+  console.log('init 5555');
   const butter = await Item.create({
     name: "voi",
     type: "other",
@@ -97,7 +90,6 @@ const init = async () => {
     pricePerUnit: 7.96,
   });
 
-  console.log('6666666');
   const korppujauho = await Item.create({
     name: "korppujauho",
     type: "other",
@@ -107,31 +99,75 @@ const init = async () => {
     pricePerUnit: 7.98,
   });
 
-  console.log('7777777');
+  const riceMilk = await Item.create({
+    name: "riisimaito",
+    type: "other",
+    unitSize: 1,
+    brand: "kotimaista",
+    price: 1.99,
+    pricePerUnit: 1.99,
+  });
+
   const recipe = await Recipe.create({
     name: "muikut",
     description: "muikut",
     ownerId: user.id,
-    global: false,
+    global: true,
   });
 
-  await RecipeToIncredient.create({
+  await RecipeToItem.create({
     recipeId: recipe.id,
-    ingredientId: fish.id,
+    itemId: fish.id,
     ammount: 1,
   });
 
-  await RecipeToIncredient.create({
+  await RecipeToItem.create({
     recipeId: recipe.id,
-    ingredientId: korppujauho.id,
+    itemId: korppujauho.id,
     ammount: 0.1,
   });
 
-  await RecipeToIncredient.create({
+  await RecipeToItem.create({
     recipeId: recipe.id,
-    ingredientId: butter.id,
+    itemId: butter.id,
+    ammount: 0.1,
+  });
+
+  const poridgeRecipe = await Recipe.create({
+    name: "puuro",
+    description: "puuro",
+    ownerId: user.id,
+    global: true,
+  });
+
+  await RecipeToItem.create({
+    recipeId: poridgeRecipe.id,
+    itemId: oat.id,
+    ammount: 0.1,
+  });
+
+  await RecipeToItem.create({
+    recipeId: poridgeRecipe.id,
+    itemId: riceMilk.id,
+    ammount: 0.1,
+  });
+
+  await RecipeToItem.create({
+    recipeId: poridgeRecipe.id,
+    itemId: butter.id,
     ammount: 0.1,
   });
 };
+
+const connectAndinit = async () => {
+  try {
+    await connectToDatabase();
+    await init();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+connectAndinit();
 
 /* init(); */

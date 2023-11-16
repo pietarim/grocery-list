@@ -1,13 +1,13 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../config/db';
-import { IngredientCategory } from '../types';
+import { ItemCategory } from '../types';
 
-class Ingredient extends Model { // TODO prety sure this is not needed
+class Item extends Model { // TODO prety sure this is not needed
   public id!: number;
   public name!: string;
   public type!: string;
 }
-Ingredient.init({
+Item.init({
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -17,9 +17,9 @@ Ingredient.init({
     type: DataTypes.TEXT,
     allowNull: false
   },
-  ingredientCategory: {
+  itemCategory: {
     type: DataTypes.ENUM,
-    values: Object.values(IngredientCategory),
+    values: Object.values(ItemCategory),
     allowNull: false
   }
 }, {
@@ -27,4 +27,4 @@ Ingredient.init({
   modelName: 'incredient',
 });
 
-export { Ingredient };
+export { Item };

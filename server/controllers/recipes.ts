@@ -1,9 +1,9 @@
 import { sequelize } from '../config/db';
 import { Op } from 'sequelize';
 import { Recipe } from '../models/recipe';
-import { RecipeToIncredient } from '../models/recipeToIncredient';
-/* import { Ingredient } from '../models/ingredient'; */
-import { IngredientCategory, NewIngredient, NewRecipeToIngredient } from '../types';
+import { RecipeToItem } from '../models/recipeToItem';
+import { Item } from '../models/';
+import { ItemCategory, NewItem, NewRecipeToItem } from '../types';
 import { parseIncredient, parseString, parseDescription, parseOwnerId, parseGlobal } from '../config/utils';
 
 export const getUsersRecipes = async (req: any, res: any) => {
@@ -17,21 +17,29 @@ export const getUsersRecipes = async (req: any, res: any) => {
 };
 
 export const getRandomRecipes = async (req: any, res: any) => {
-  const { limit, userId } = req.body;
+  /* const { limit, userId } = req.body; */
   const recipes = await Recipe.findAll({
-    limit: limit,
-    where: {
+    limit: 5,
+    include: [{
+      model: Item,
+      as: 'item',
+      through: {
+        attributes: ['ammount', 'id']
+      }
+    },
+    ],
+    /* where: { TODO this will be needed later
       ownerId: {
         [Op.ne]: userId
       }
-    },
+    }, */
     order: sequelize.random()
   });
   res.send(recipes);
 };
 
 /* export const addAllIncredients = async (recipe: any) => {
-  await RecipeToIncredient.create({
+  await RecipeToItem.create({
     recipeId: recipe.id,
     incredientId: recipe.incredientId,
     amount: recipe.amount
@@ -43,7 +51,7 @@ export const createRecipe = async (req: any, res: any) => {
   const { name, description, ownerId, global, incredients } = req.body;
   const transaction = await sequelize.transaction();
 
-  const parsedIncredients: NewIngredient[] = incredients.map((incredient: any) => {
+  const parsedIncredients: NewItem[] = incredients.map((incredient: any) => {
     return parseIncredient(incredient);
   });
 
@@ -57,14 +65,14 @@ export const createRecipe = async (req: any, res: any) => {
       parsedName, parsedDescription, parsedOwnerId, parsedGlobal
     }, { transaction });
 
-    const ingredientList: NewRecipeToIngredient[] = parsedIncredients.map(
-      (ingredient: NewIngredient) => {
+    const itemList: NewRecipeToItem[] = parsedIncredients.map(
+      (item: NewItem) => {
         return {
-          ingredientId: ingredient.id, ammount: ingredient.ammount, recipeId: recipe.id
+          itemId: item.id, ammount: item.ammount, recipeId: recipe.id
         };
       });
 
-    await RecipeToIncredient.bulkCreate(ingredientList, { transaction });
+    await RecipeToItem.bulkCreate(itemList, { transaction });
 
     await transaction.commit();
     res.status(201).send('Recipe created');

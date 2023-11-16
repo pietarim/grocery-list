@@ -43,17 +43,17 @@ Item.init({
     allowNull: false
   },
   unitSize: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.DECIMAL,
     allowNull: false
   },
   brand: {
     type: DataTypes.TEXT
   },
   price: {
-    type: DataTypes.INTEGER
+    type: DataTypes.DECIMAL
   },
   pricePerUnit: {
-    type: DataTypes.INTEGER
+    type: DataTypes.DECIMAL
   },
 
 }, {
