@@ -1,6 +1,6 @@
-import { NewItem, ItemCategory } from '../types';
+import { NewRecipesItem, ItemCategory } from '../types';
 
-export const parseIncredient = (item: unknown): NewItem => {
+export const parseIncredient = (item: unknown): NewRecipesItem => {
   if (
     typeof item === 'object' &&
     item !== null &&
@@ -29,7 +29,14 @@ export const parseIncredient = (item: unknown): NewItem => {
   throw new Error('Invalid incredient');
 };
 
-/* export const parseIncredient = (: unknown): NewItem => {
+export const parseCategory = (category: unknown): ItemCategory => {
+  if (typeof category === 'string' && Object.values(ItemCategory).includes(category as ItemCategory)) {
+    return category as ItemCategory;
+  }
+  throw new Error('Invalid category');
+};
+
+/* export const parseIncredient = (: unknown): NewRecipesItem => {
   if (
     typeof  === 'object' &&
      !== null &&
@@ -46,7 +53,7 @@ export const parseIncredient = (item: unknown): NewItem => {
       typeof ing.itemCategory === 'string' &&
       Object.values(ItemCategory).includes(ing.itemCategory as ItemCategory)
     ) {
-      return ing as NewItem;
+      return ing as NewRecipesItem;
     }
   }
 
@@ -67,14 +74,14 @@ export const parseDescription = (description: unknown): string => {
   throw new Error('Invalid description');
 };
 
-export const parseOwnerId = (ownerId: unknown): number => {
+export const parseNumber = (ownerId: unknown): number => {
   if (typeof ownerId === 'number') {
     return ownerId;
   }
   throw new Error('Invalid ownerId');
 };
 
-export const parseGlobal = (global: unknown): boolean => {
+export const parseBoolean = (global: unknown): boolean => {
   if (typeof global === 'boolean') {
     return global;
   }

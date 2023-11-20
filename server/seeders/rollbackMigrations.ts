@@ -1,5 +1,5 @@
 /* const { DATABASE_URL } = require('./config'); */
-import config from './config';
+import config from '../config/config';
 const { Sequelize } = require('sequelize');
 const { Umzug, SequelizeStorage } = require('umzug');
 

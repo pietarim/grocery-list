@@ -12,15 +12,12 @@ export enum ItemCategory {
   Sauce = 'sauce',
   Fish = 'fish',
   Seafood = 'seafood',
-  Baking = 'baking'
+  Baking = 'baking',
+  Ice_cream = 'ice cream',
+  Frozen_prem = 'frozen_prem'
 }
 
-/* export interface NewItem {
-  name: string;
-  itemCategory: ItemCategory;
-} */
-
-export interface NewItem {
+export interface NewRecipesItem {
   name: string;
   ammount: number;
   id: number;
@@ -30,4 +27,20 @@ export interface NewRecipeToItem {
   recipeId: number;
   itemId: number;
   ammount: number;
+}
+
+export interface NewItem {
+  name: string;
+  type: ItemCategory;
+  unitSize: number;
+  brand: string;
+  price: number;
+  pricePerUnit: number;
+}
+
+export interface NewRecipe {
+  name: string;
+  description: string;
+  ownerId: number;
+  global: boolean;
 }

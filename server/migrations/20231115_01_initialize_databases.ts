@@ -52,6 +52,9 @@ export const up = async ({ context: queryInterface }: { context: QueryInterface;
       type: DataTypes.STRING,
       allowNull: false,
     },
+    imageUri: {
+      type: DataTypes.STRING,
+    },
     ownerId: {
       type: DataTypes.INTEGER,
       allowNull: false,

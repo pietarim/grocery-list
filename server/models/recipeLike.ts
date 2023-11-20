@@ -1,8 +1,20 @@
-import { Model, DataTypes, Sequelize, QueryTypes } from 'sequelize';
+import { Model, DataTypes, Sequelize, QueryTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 
-class Like extends Model { }
-Like.init({
+interface RecipeLikeAttributes {
+  id: number;
+  userId: number;
+  recipeId: number;
+}
+
+type RecipeLikeCreationAttributes = Optional<RecipeLikeAttributes, 'id'>;
+
+class RecipeLike extends Model<RecipeLikeAttributes, RecipeLikeCreationAttributes> {
+  declare id: number;
+  declare userId: number;
+  declare recipeId: number;
+}
+RecipeLike.init({
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -12,7 +24,7 @@ Like.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'user',
+      model: 'users',
       key: 'id'
     },
   },
@@ -26,8 +38,8 @@ Like.init({
   },
 }, {
   sequelize,
-  modelName: 'like',
+  modelName: 'recipeLike',
 }
 );
 
-export { Like };
+export { RecipeLike };

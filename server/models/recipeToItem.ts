@@ -8,7 +8,7 @@ interface RecipeToItemAttributes {
   ammount: number;
 }
 
-type RecipeToItemCreationAttributes = Optional<RecipeToItemAttributes, 'id'>; // TODO: is this needed?
+type RecipeToItemCreationAttributes = Optional<RecipeToItemAttributes, 'id'>;
 
 class RecipeToItem extends Model<RecipeToItemAttributes, RecipeToItemCreationAttributes> {
   declare id: number;

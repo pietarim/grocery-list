@@ -1,7 +1,10 @@
 import { Sequelize } from 'sequelize';
 import { Model, DataTypes } from "sequelize";
-import { User, Recipe, RecipeToItem, Item } from "../models/index";
+import { User, Recipe, RecipeToItem, Item, RecipeLike } from "../models/index";
 import { Umzug, SequelizeStorage } from 'umzug';
+import { users } from './users';
+import { items } from './items';
+
 
 const sequelize = new Sequelize('postgres://postgres:mysecretpassword@localhost:5432/postgres'); //5432
 
@@ -47,8 +50,49 @@ const main = async () => {
 };
 
 main();
+
 const init = async () => {
-  const user = await User.create({
+  await RecipeLike.destroy({
+    where: {
+    },
+    truncate: true
+  });
+
+  await RecipeToItem.destroy({
+    where: {
+    },
+    truncate: true
+  });
+
+  await Recipe.destroy({
+    where: {
+    }
+  });
+
+  await Item.destroy({
+    where: {
+    }
+  });
+
+  await User.destroy({
+    where: {
+    }
+  });
+
+  /* const addUser = async (username: string, email: string, passwordHash: string, isAdmin: boolean) => {
+    await User.create({
+      username,
+      email,
+      passwordHash,
+      isAdmin,
+    });
+  }; */
+
+  const allUsers = await User.bulkCreate(users);
+
+  const allItems = await Item.bulkCreate(items);
+
+  /* const user = await User.create({
     username: "test",
     email: "user@gmail.com",
     passwordHash: "password",
@@ -62,7 +106,14 @@ const init = async () => {
     isAdmin: false,
   });
 
-  const fish = await Item.create({
+  const user2 = await User.create({
+    username: "Matti",
+    email: "matti@gmail.com",
+    passwordHash: "password",
+    isAdmin: false,
+  }); */
+
+  /* const fish = await Item.create({
     name: "muikut öljyssä",
     type: "fish",
     unitSize: 0.15,
@@ -106,56 +157,66 @@ const init = async () => {
     brand: "kotimaista",
     price: 1.99,
     pricePerUnit: 1.99,
-  });
+  }); */
 
   const recipe = await Recipe.create({
     name: "muikut",
     description: "muikut",
-    ownerId: user.id,
+    ownerId: allUsers[0].id,
     global: true,
   });
 
   await RecipeToItem.create({
     recipeId: recipe.id,
-    itemId: fish.id,
+    itemId: allItems[0].id,
     ammount: 1,
   });
 
   await RecipeToItem.create({
     recipeId: recipe.id,
-    itemId: korppujauho.id,
+    itemId: allItems[19].id,
     ammount: 0.1,
   });
 
   await RecipeToItem.create({
     recipeId: recipe.id,
-    itemId: butter.id,
+    itemId: allItems[18].id,
     ammount: 0.1,
   });
 
   const poridgeRecipe = await Recipe.create({
     name: "puuro",
     description: "puuro",
-    ownerId: user.id,
+    ownerId: allUsers[1].id,
     global: true,
   });
 
   await RecipeToItem.create({
     recipeId: poridgeRecipe.id,
-    itemId: oat.id,
+    itemId: allItems[20].id,
     ammount: 0.1,
   });
 
   await RecipeToItem.create({
     recipeId: poridgeRecipe.id,
-    itemId: riceMilk.id,
+    itemId: allItems[22].id,
     ammount: 0.1,
   });
 
   await RecipeToItem.create({
     recipeId: poridgeRecipe.id,
-    itemId: butter.id,
+    itemId: allItems[21].id,
     ammount: 0.1,
+  });
+
+  await RecipeLike.create({
+    userId: allUsers[1].id,
+    recipeId: recipe.id,
+  });
+
+  await RecipeLike.create({
+    userId: allUsers[2].id,
+    recipeId: recipe.id,
   });
 };
 

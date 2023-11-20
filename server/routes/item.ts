@@ -1,14 +1,33 @@
 import express from 'express';
-import { getItems } from '../query/item';
+import { addItem, getAllItems, updateItem } from '../controllers/item';
+import { parseString, parseNumber } from '../config/utils';
 
 const router = express.Router();
 
-router.get('/', async (_req, res, next) => {
-  const items = await getItems();
-  if (!items) {
-    return next(new Error('No items found'));
-  }
-  res.status(200).json(items);
+router.post('/', async (_req, res, next) => {
+  await addItem(_req, res, next);
 });
+
+router.get('/', async (_req, res, next) => {
+  await getAllItems(_req, res, next);
+});
+
+router.put('/:id', async (_req, res, next) => {
+  await updateItem(_req, res, next);
+});
+
+router.delete('/:id', async (req, res, next) => {
+  console.log('delete item');
+  const { id } = req.params;
+  if (!id) {
+    throw new Error('Missing id');
+  }
+  const parsedId = parseString(id);
+  if (!parsedId) {
+    throw new Error('Invalid id');
+  }
+
+}
+);
 
 export default router;

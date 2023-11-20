@@ -3,39 +3,29 @@ import { Op } from 'sequelize';
 import { Recipe } from '../models/recipe';
 import { RecipeToItem } from '../models/recipeToItem';
 import { Item } from '../models/';
-import { ItemCategory, NewItem, NewRecipeToItem } from '../types';
-import { parseIncredient, parseString, parseDescription, parseOwnerId, parseGlobal } from '../config/utils';
+import { ItemCategory, NewRecipesItem, NewRecipeToItem, NewRecipe } from '../types';
+import { parseIncredient, parseString, parseDescription, parseNumber, parseBoolean } from '../config/utils';
+import { getRecipeToItemById, createRecipeToItems, deleteRecipeToItems } from '../query/recipeToItem';
+import { getRandomRecipes, getUsersRecipes } from '../query/recipe';
 
-export const getUsersRecipes = async (req: any, res: any) => {
+export const getUsersOwnRecipes = async (req: any, res: any) => {
   const { userId } = req.body;
-  const recipes = await Recipe.findAll({
+  /* const recipes = await Recipe.findAll({
     where: {
       ownerId: userId
     }
   });
+  res.send(recipes); */
+  const recipes = await getUsersRecipes(userId);
   res.send(recipes);
 };
 
-export const getRandomRecipes = async (req: any, res: any) => {
-  /* const { limit, userId } = req.body; */
-  const recipes = await Recipe.findAll({
-    limit: 5,
-    include: [{
-      model: Item,
-      as: 'item',
-      through: {
-        attributes: ['ammount', 'id']
-      }
-    },
-    ],
-    /* where: { TODO this will be needed later
-      ownerId: {
-        [Op.ne]: userId
-      }
-    }, */
-    order: sequelize.random()
-  });
-  res.send(recipes);
+export const getIntroduceRecipes = async (req: any, res: any) => {
+  console.log('getintroducerecipes');
+  console.log('!!! controller started !!! controller started !!! controller started !!! controller started !!! controller started ');
+  const recipes = await getRandomRecipes();
+  console.log(recipes);
+  res.json(recipes);
 };
 
 /* export const addAllIncredients = async (recipe: any) => {
@@ -51,22 +41,25 @@ export const createRecipe = async (req: any, res: any) => {
   const { name, description, ownerId, global, incredients } = req.body;
   const transaction = await sequelize.transaction();
 
-  const parsedIncredients: NewItem[] = incredients.map((incredient: any) => {
+  const parsedIncredients: NewRecipesItem[] = incredients.map((incredient: any) => {
     return parseIncredient(incredient);
   });
 
   const parsedName = parseString(name);
   const parsedDescription = parseDescription(description);
-  const parsedOwnerId = parseOwnerId(ownerId);
-  const parsedGlobal = parseGlobal(global);
+  const parsedOwnerId = parseNumber(ownerId);
+  const parsedGlobal = parseBoolean(global);
 
   try {
     const recipe = await Recipe.create({
-      parsedName, parsedDescription, parsedOwnerId, parsedGlobal
+      name: parsedName,
+      description: parsedDescription,
+      ownerId: parsedOwnerId,
+      global: parsedGlobal
     }, { transaction });
 
     const itemList: NewRecipeToItem[] = parsedIncredients.map(
-      (item: NewItem) => {
+      (item: NewRecipesItem) => {
         return {
           itemId: item.id, ammount: item.ammount, recipeId: recipe.id
         };
@@ -81,5 +74,61 @@ export const createRecipe = async (req: any, res: any) => {
     console.log(error);
     await transaction.rollback();
     res.status(500).send('Something went wrong');
+  }
+};
+
+export const deleteRecipe = async (id: string, userId: number) => {
+
+  const recipe = await Recipe.findOne({
+    where: {
+      id, ownerId: userId
+    }
+  });
+
+  if (!recipe) {
+    throw new Error('401');
+  }
+
+  await Recipe.destroy({
+    where: {
+      id
+    }
+  });
+};
+
+export const updateRecipe = async (recipe: NewRecipe, id: number, ingredients: any) => {
+  const transaction = await sequelize.transaction();
+  const parsedIngredients: NewRecipesItem[] = ingredients.map((incredient: any) => {
+    return parseIncredient(incredient);
+  });
+  const recipesToItems = await getRecipeToItemById(id);
+  const ingredientsToAdd = parsedIngredients.map((ingredient: NewRecipesItem) => {
+    if (recipesToItems.some((item) => item.itemId !== ingredient.id)) {
+      return ingredient;
+    }
+  });
+  const ingredientsToRemove = recipesToItems.map((item: any) => {
+    if (parsedIngredients.some((ingredient) => ingredient.id !== item.itemId)) {
+      return item;
+    }
+  });
+  try {
+    await createRecipeToItems(ingredientsToAdd, transaction);
+    await deleteRecipeToItems(ingredientsToRemove, transaction);
+
+    /* const recipeToItemToRemove = recipesToItems.filter((item: any) => item.itemId !== incredients.id);
+    const recipeToItemToAdd = incredients.filter((item: any) => item.id !== ); */
+
+    await Recipe.update(recipe, {
+      where: {
+        id
+      },
+      transaction
+    });
+    await transaction.commit();
+  } catch (error) {
+    console.log(error);
+    await transaction.rollback();
+    throw new Error('Something went wrong');
   }
 };
