@@ -38,7 +38,7 @@ Item.init({
       'meat', 'vegetable', 'spice', 'other', 'rice',
       'premade', 'frozen_premade', 'candy', 'sauce',
       'fish', 'seafood', 'dairy', 'fruit', 'baking',
-      'other', 'ice cream', 'frozen_prem'
+      'ice cream', 'frozen_prem', 'grain'
     ],
     allowNull: false
   },
@@ -54,7 +54,7 @@ Item.init({
   },
   pricePerUnit: {
     type: DataTypes.DECIMAL
-  },
+  }
 
 }, {
   sequelize,

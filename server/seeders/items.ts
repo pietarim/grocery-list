@@ -14,7 +14,7 @@ import { NewItem, ItemCategory } from "../types";
 
 export const items: NewItem[] = [
   {
-    name: "muikut",
+    name: "muikut", /* 1 */
     type: ItemCategory.Fish,
     unitSize: 0.15,
     brand: "kotimaista",
@@ -22,7 +22,7 @@ export const items: NewItem[] = [
     pricePerUnit: 13.27,
   },
   {
-    name: "beef steak",
+    name: "beef steak", /* 2 */
     type: ItemCategory.Meat,
     unitSize: 0.5,
     brand: "farmfresh",
@@ -30,7 +30,7 @@ export const items: NewItem[] = [
     pricePerUnit: 11.98,
   },
   {
-    name: "carrot",
+    name: "carrot", /* 3 */
     type: ItemCategory.Vegetable,
     unitSize: 0.2,
     brand: "greenValley",
@@ -38,16 +38,15 @@ export const items: NewItem[] = [
     pricePerUnit: 4.95,
   },
   {
-    name: "black pepper",
+    name: "black pepper", /* 4 */
     type: ItemCategory.Spice,
     unitSize: 0.05,
     brand: "spiceKing",
     price: 3.49,
     pricePerUnit: 69.8,
   },
-  /* 5 bellow */
   {
-    name: "basmati rice",
+    name: "basmati rice", /* 5 */
     type: ItemCategory.Grain,
     unitSize: 1,
     brand: "eastAroma",
@@ -55,7 +54,7 @@ export const items: NewItem[] = [
     pricePerUnit: 2.99,
   },
   {
-    name: "lasagna",
+    name: "lasagna", /* 6 */
     type: ItemCategory.Premade,
     unitSize: 0.5,
     brand: "quickMeal",
@@ -63,7 +62,7 @@ export const items: NewItem[] = [
     pricePerUnit: 9.98,
   },
   {
-    name: "frozen pizza",
+    name: "frozen pizza", /* 7 */
     type: ItemCategory.FrozenPremade,
     unitSize: 0.4,
     brand: "frostyGood",
@@ -71,15 +70,15 @@ export const items: NewItem[] = [
     pricePerUnit: 9.975,
   },
   {
-    name: "chocolate bar",
+    name: "chocolate bar", /* 8 */
     type: ItemCategory.Candy,
-    unitSize: 0.1,
-    brand: "sweetTooth",
-    price: 1.29,
+    unitSize: 0.4,
+    brand: "Fazer",
+    price: 0.89,
     pricePerUnit: 12.9,
   },
   {
-    name: "tomato sauce",
+    name: "tomato sauce", /* 9 */
     type: ItemCategory.Sauce,
     unitSize: 0.3,
     brand: "italiano",
@@ -88,7 +87,7 @@ export const items: NewItem[] = [
   },
   /* 10 bellow */
   {
-    name: "shrimp",
+    name: "shrimp", /* 10 */
     type: ItemCategory.Seafood,
     unitSize: 0.2,
     brand: "oceanFresh",
@@ -96,7 +95,7 @@ export const items: NewItem[] = [
     pricePerUnit: 34.95,
   },
   {
-    name: "cheddar cheese",
+    name: "cheddar cheese", /* 11 */
     type: ItemCategory.Dairy,
     unitSize: 0.25,
     brand: "dairyFarm",
@@ -104,7 +103,7 @@ export const items: NewItem[] = [
     pricePerUnit: 15.96,
   },
   {
-    name: "apple",
+    name: "apple", /* 12 */
     type: ItemCategory.Fruit,
     unitSize: 0.2,
     brand: "orchard",
@@ -112,7 +111,7 @@ export const items: NewItem[] = [
     pricePerUnit: 3.45,
   },
   {
-    name: "flour",
+    name: "flour", /* 13 */
     type: ItemCategory.Baking,
     unitSize: 1,
     brand: "bakeMaster",
@@ -120,7 +119,7 @@ export const items: NewItem[] = [
     pricePerUnit: 1.99,
   },
   {
-    name: "pickles",
+    name: "pickles", /* 14 */
     type: ItemCategory.Other,
     unitSize: 0.3,
     brand: "crunchy",
@@ -129,7 +128,7 @@ export const items: NewItem[] = [
   },
   /* 15 bellow */
   {
-    name: "salmon",
+    name: "salmon", /* 15 */
     type: ItemCategory.Fish,
     unitSize: 0.2,
     brand: "riverFresh",
@@ -137,7 +136,7 @@ export const items: NewItem[] = [
     pricePerUnit: 24.95,
   },
   {
-    name: "pork ribs",
+    name: "pork ribs", /* 16 */
     type: ItemCategory.Meat,
     unitSize: 0.7,
     brand: "farmhouse",
@@ -145,7 +144,7 @@ export const items: NewItem[] = [
     pricePerUnit: 10.7,
   },
   {
-    name: "broccoli",
+    name: "broccoli", /* 17 */
     type: ItemCategory.Vegetable,
     unitSize: 0.25,
     brand: "greenHarvest",
@@ -153,7 +152,7 @@ export const items: NewItem[] = [
     pricePerUnit: 5.16,
   },
   {
-    name: "cinnamon",
+    name: "cinnamon", /* 18 */
     type: ItemCategory.Spice,
     unitSize: 0.04,
     brand: "spiceWorld",
@@ -161,7 +160,7 @@ export const items: NewItem[] = [
     pricePerUnit: 74.75,
   },
   {
-    name: "korppujauho",
+    name: "korppujauho", /* 19 */
     type: ItemCategory.Other,
     unitSize: 0.4,
     brand: "kotimaista",
@@ -170,7 +169,7 @@ export const items: NewItem[] = [
   },
   /* 20 bellow */
   {
-    name: "butter",
+    name: "butter", /* 20 */
     type: ItemCategory.Dairy,
     unitSize: 0.25,
     brand: "kotimaista",
@@ -178,7 +177,7 @@ export const items: NewItem[] = [
     pricePerUnit: 7.96,
   },
   {
-    name: "oat",
+    name: "oat", /* 21 */
     type: ItemCategory.Other,
     unitSize: 1,
     brand: "kotimaista",
@@ -186,12 +185,29 @@ export const items: NewItem[] = [
     pricePerUnit: 1.99,
   },
   {
-    name: "rice milk",
+    name: "rice milk", /* 22 */
     type: ItemCategory.Other,
     unitSize: 1,
     brand: "kotimaista",
     price: 1.99,
     pricePerUnit: 1.99,
+  },
+  {
+    name: "yeast", /* 23 */
+    type: ItemCategory.Other,
+    unitSize: 0.05,
+    brand: "kotimaista",
+    price: 0.4,
+    pricePerUnit: 80,
+  },
+  {
+    name: "salt", /* 24 */
+    type: ItemCategory.Spice,
+    unitSize: 0.50,
+    brand: "kotimaista",
+    price: 0.99,
+    pricePerUnit: 1.98,
   }
+
 
 ];

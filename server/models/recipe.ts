@@ -7,6 +7,7 @@ class Recipe extends Model {
   public description!: string;
   public ownerId!: number;
   public global!: boolean;
+  public imageUri?: string;
 }
 Recipe.init({
   id: {
@@ -19,7 +20,7 @@ Recipe.init({
     allowNull: false
   },
   description: {
-    type: DataTypes.TEXT
+    type: DataTypes.STRING(1000)
   },
   ownerId: {
     type: DataTypes.INTEGER,
@@ -28,6 +29,9 @@ Recipe.init({
       model: 'user',
       key: 'id'
     },
+  },
+  imageUri: {
+    type: DataTypes.TEXT
   },
   global: {
     type: DataTypes.BOOLEAN,

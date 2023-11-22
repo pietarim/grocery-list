@@ -2,7 +2,12 @@ import { Item } from '../models/item';
 import { NewItem } from '../types';
 
 export const getItems = async () => {
-  const items = await Item.findAll();
+  const items = await Item.findAll({
+    order: [
+      ['type', 'ASC'],
+      ['name', 'ASC']
+    ]
+  });
   return items;
 };
 

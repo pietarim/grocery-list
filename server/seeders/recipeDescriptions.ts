@@ -1,0 +1,19 @@
+interface RecipeDescriptions {
+  muikut: string;
+  puuro: string;
+  ribs: string;
+  preMadeLasagna: string;
+  salmon: string;
+  bread: string;
+  chocolateBar: string;
+}
+
+export const descriptions: RecipeDescriptions = {
+  muikut: "Korppujauhoissa paistetut muikut ovat perinteinen suomalainen herkku, joka tuo esiin muikun ainutlaatuisen maun ja rakenteen. Tämä ruokalaji on yksinkertainen valmistaa. Pienet muikut pyöritellään ensin maustetussa korppujauhossa, mikä antaa niille herkullisen rapean kuoren. Sen jälkeen ne paistetaan voissa pannulla kullanruskeiksi. Tarjoillessa muikut sopivat erinomaisesti ruisleivän ja raikkaan salaatin kera. Tämä ruokalaji on loistava valinta, kun halutaan nauttia tuoreesta kalasta ja yksinkertaisista, mutta maukkaista makuista.",
+  puuro: "Puuro on suomalaisille perinteinen ruoka, joka on helppo valmistaa ja joka sopii erinomaisesti aamiaiseksi tai välipalaksi. Puuroa voidaan valmistaa monista eri viljoista, kuten kaurasta, ohrasta, rukiista, riisistä tai mannasta. Puuro on helppo valmistaa, sillä se vain keitetään vedessä tai maidossa. Puuroa voidaan maustaa esimerkiksi suolalla, sokerilla, hunajalla tai marjoilla. Puuro on terveellinen ja ravitseva ruoka, joka sopii erinomaisesti aamiaiseksi tai välipalaksi. Puuro on myös edullinen ruoka, joka sopii hyvin arkiruoaksi.",
+  ribs: "Ribs are a beloved classic in barbecue cuisine, known for their rich, meaty flavor and tender texture. This dish involves slow-cooking the ribs, usually pork or beef, over low heat to ensure they become succulently soft and fall off the bone. A variety of seasonings and marinades can be used to enhance their flavor, with barbecue sauce being a popular choice for a sweet and tangy finish. Ribs are perfect for outdoor grilling events or a hearty family dinner. Their versatility allows for many cooking methods and flavor combinations, making them a favorite for both cooking enthusiasts and meat lovers alike.",
+  preMadeLasagna: "Lasagna is a traditional Italian dish made by layering pasta sheets with meat, cheese, and tomato sauce, then baking it in the oven. The result is a rich and flavorful casserole that is perfect for feeding a crowd. Lasagna is a great dish to make ahead of time, as it can be assembled and frozen for later use. It can also be made with a variety of fillings, including vegetables, seafood, or even just cheese. Lasagna is a hearty and satisfying meal that is sure to please everyone at the table.",
+  salmon: "Salmon is a popular fish that is known for its rich flavor and tender texture. It can be prepared in a variety of ways, including baking, grilling, and pan-frying. Salmon is a good source of protein and omega-3 fatty acids, which are essential for brain function and heart health. It is also low in calories and high in vitamins and minerals, making it a healthy choice for any meal. Salmon is a versatile fish that can be enjoyed in a variety of dishes, from salads to sandwiches to pasta.",
+  bread: "Bread is a staple food in many cultures. It is made from a dough of flour and water, which is then baked in an oven. Bread can be made with a variety of grains, including wheat, rye, and corn. It can also be made with other ingredients, such as eggs, milk, and sugar. Bread is a versatile food that can be eaten on its own or used as an ingredient in other dishes. It is also a good source of carbohydrates, which provide energy for the body.",
+  chocolateBar: "Chocolate is a popular treat that is enjoyed by people of all ages. It is made from the seeds of the cacao tree, which are roasted and ground into a paste. The paste is then mixed with sugar and other ingredients to create a smooth, creamy texture. Chocolate can be eaten on its own or used as an ingredient in other dishes, such as cakes and cookies. It is also a good source of antioxidants, which help protect the body from free radicals. Chocolate is a delicious treat that can be enjoyed in a variety of ways."
+};

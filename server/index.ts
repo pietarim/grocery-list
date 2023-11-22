@@ -3,9 +3,6 @@ import express from 'express';
 import config from './config/config';
 import { userRouter, recipeRouter, itemRouter, imageRouter } from './routes';
 import cors from 'cors';
-/* import userRouter from './routes/user';
-import recipeRouter from './routes/recipe';
-import itemRouter from './routes/item'; */
 const { Model, DataTypes, Sequelize, QueryTypes } = require('sequelize');
 
 const app = express();

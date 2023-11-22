@@ -1,30 +1,80 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+/* import { ChakraProvider } from '@chakra-ui/react' */
+/* import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg'; */
+import { Tabs, TabList, Tab, TabPanel, TabPanels, Button } from "@chakra-ui/react";
 import './App.css';
-import Recipe from './Components/Recipe';
+import ListRecipes from './Components/ListRecipes';
+import CreateRecipe from "./Components/CreateRecipe";
+
 
 function App() {
+  /* const [recipe, setRecipe] = useState<Recipe[]>([]);
+  const [imageUri, setImageUri] = useState<string>("null"); */
+
+  /* useEffect(() => {
+    const fetchRecipes = async () => {
+      const recipes = await axios.get('http://localhost:3001/api/recipes');
+      const recipeData = recipes.data as Recipe[];
+      setImageUri(`http://localhost:3001/api/images/${recipeData[0].imageUri}`);
+    };
+    fetchRecipes();
+  }, []); */
+
+  /* const returnImage = () => {
+    if (imageUri !== "null") {
+      return (
+        <img style={{ 'height': 512, 'width': 512 }} src={imageUri} />
+      );
+    } */
+
+  /* if (recipe[0]) {
+    console.log(recipe[0]);
+    if (recipe[0].imageUri) {
+      console.log('true');
+    }
+  }
+   
+  console.log(recipe[0].imageUri); */
+
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+    <div>
+      <Tabs variant='enclosed'>
+        <TabList>
+          <Tab>Discover recipes</Tab>
+          <Tab>My recipes</Tab>
+          <Tab>Create recipe</Tab>
+          <Tab>Shopping cart</Tab>
+          <Tab>Friends</Tab>
+          <Button>Log out</Button>
+        </TabList>
+        {/* <ListRecipes /> */}
+
+        <TabPanels>
+          <TabPanel>
+            <ListRecipes />
+          </TabPanel>
+          <TabPanel>
+            <p>two!</p>
+          </TabPanel>
+          <TabPanel>
+            <CreateRecipe />
+          </TabPanel>
+          <TabPanel>
+            <p>four!</p>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </div>
+  );
+}
+{/* <>
       <div className="card">
-        <Recipe />
+        <ListRecipes />
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-    </>
-  );
-}
+    </> */}
 
 export default App;

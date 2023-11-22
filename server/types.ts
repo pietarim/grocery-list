@@ -43,4 +43,5 @@ export interface NewRecipe {
   description: string;
   ownerId: number;
   global: boolean;
+  imageUri?: string;
 }

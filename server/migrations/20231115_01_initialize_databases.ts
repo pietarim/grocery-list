@@ -1,7 +1,6 @@
 import { DataTypes, QueryInterface, Sequelize } from 'sequelize';
 
 export const up = async ({ context: queryInterface }: { context: QueryInterface; }) => {
-  console.log('m 11111111');
   await queryInterface.createTable('users', {
     id: {
       type: DataTypes.INTEGER,
@@ -37,7 +36,6 @@ export const up = async ({ context: queryInterface }: { context: QueryInterface;
       defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
     },
   });
-  console.log('m 22222222');
   await queryInterface.createTable('recipes', {
     id: {
       type: DataTypes.INTEGER,
@@ -49,7 +47,7 @@ export const up = async ({ context: queryInterface }: { context: QueryInterface;
       allowNull: false,
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(1000),
       allowNull: false,
     },
     imageUri: {
@@ -78,7 +76,6 @@ export const up = async ({ context: queryInterface }: { context: QueryInterface;
       defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
     },
   });
-  console.log('m 33333333');
   await queryInterface.createTable('items', {
     id: {
       type: DataTypes.INTEGER,
@@ -118,7 +115,6 @@ export const up = async ({ context: queryInterface }: { context: QueryInterface;
       defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
     },
   });
-  console.log('m 44444444');
   await queryInterface.createTable('recipeToItems', {
     id: {
       type: DataTypes.INTEGER,
@@ -156,7 +152,6 @@ export const up = async ({ context: queryInterface }: { context: QueryInterface;
       defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
     },
   });
-  console.log('m 55555555');
   await queryInterface.createTable('recipeLikes', {
     id: {
       type: DataTypes.INTEGER,
@@ -190,7 +185,6 @@ export const up = async ({ context: queryInterface }: { context: QueryInterface;
       defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
     },
   });
-  console.log('m 66666666');
 };
 
 export const down = async ({ context: queryInterface }: { context: QueryInterface; }) => {

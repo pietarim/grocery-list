@@ -24,7 +24,7 @@ export const getIntroduceRecipes = async (req: any, res: any) => {
   console.log('getintroducerecipes');
   console.log('!!! controller started !!! controller started !!! controller started !!! controller started !!! controller started ');
   const recipes = await getRandomRecipes();
-  console.log(recipes);
+  /* console.log(recipes); */
   res.json(recipes);
 };
 
