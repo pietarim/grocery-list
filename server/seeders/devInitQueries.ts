@@ -5,7 +5,7 @@ import { Umzug, SequelizeStorage } from 'umzug';
 import { users } from './users';
 import { items } from './items';
 import { descriptions } from './recipeDescriptions';
-
+import { Friend } from '../models/friend';
 
 const sequelize = new Sequelize('postgres://postgres:mysecretpassword@localhost:5432/postgres'); //5432
 
@@ -81,6 +81,11 @@ const init = async () => {
 
   const allUsers = await User.bulkCreate(users);
 
+  await Friend.create({ user_id1: allUsers[0].id, user_id2: allUsers[1].id });
+  await Friend.create({ user_id1: allUsers[0].id, user_id2: allUsers[2].id });
+  await Friend.create({ user_id1: allUsers[0].id, user_id2: allUsers[3].id });
+  await Friend.create({ user_id1: allUsers[2].id, user_id2: allUsers[4].id });
+
   const allItems = await Item.bulkCreate(items);
 
   const muikutRecipe = await Recipe.create({
@@ -94,19 +99,19 @@ const init = async () => {
   await RecipeToItem.create({
     recipeId: muikutRecipe.id,
     itemId: allItems[1 - 1].id,
-    ammount: 1,
+    amount: 1,
   });
 
   await RecipeToItem.create({
     recipeId: muikutRecipe.id,
     itemId: allItems[19 - 1].id,
-    ammount: 0.1,
+    amount: 0.1,
   });
 
   await RecipeToItem.create({
     recipeId: muikutRecipe.id,
     itemId: allItems[20 - 1].id,
-    ammount: 0.1,
+    amount: 0.1,
   });
 
   const poridgeRecipe = await Recipe.create({
@@ -120,19 +125,19 @@ const init = async () => {
   await RecipeToItem.create({
     recipeId: poridgeRecipe.id,
     itemId: allItems[20 - 1].id,
-    ammount: 0.1,
+    amount: 0.1,
   });
 
   await RecipeToItem.create({
     recipeId: poridgeRecipe.id,
     itemId: allItems[21 - 1].id,
-    ammount: 0.1,
+    amount: 0.1,
   });
 
   await RecipeToItem.create({
     recipeId: poridgeRecipe.id,
     itemId: allItems[22 - 1].id,
-    ammount: 0.1,
+    amount: 0.1,
   });
 
   const ribMeal = await Recipe.create({
@@ -148,31 +153,31 @@ const init = async () => {
   await RecipeToItem.create({
     recipeId: ribMeal.id,
     itemId: allItems[16 - 1].id,
-    ammount: 0.3,
+    amount: 0.3,
   });
 
   await RecipeToItem.create({
     recipeId: ribMeal.id,
     itemId: allItems[17 - 1].id,
-    ammount: 0.2,
+    amount: 0.2,
   });
 
   await RecipeToItem.create({
     recipeId: ribMeal.id,
     itemId: allItems[3 - 1].id,
-    ammount: 0.1,
+    amount: 0.1,
   });
 
   await RecipeToItem.create({
     recipeId: ribMeal.id,
     itemId: allItems[4 - 1].id,
-    ammount: 0.02,
+    amount: 0.02,
   });
 
   await RecipeToItem.create({
     recipeId: ribMeal.id,
     itemId: allItems[5 - 1].id,
-    ammount: 0.3,
+    amount: 0.3,
   });
 
   const preMadeLasagna = await Recipe.create({
@@ -188,7 +193,7 @@ const init = async () => {
   await RecipeToItem.create({
     recipeId: preMadeLasagna.id,
     itemId: allItems[6 - 1].id,
-    ammount: 0.5,
+    amount: 0.5,
   });
 
   const bread = await Recipe.create({
@@ -205,19 +210,19 @@ const init = async () => {
   await RecipeToItem.create({
     itemId: allItems[23 - 1].id,
     recipeId: bread.id,
-    ammount: 0.2,
+    amount: 0.2,
   });
 
   await RecipeToItem.create({
     itemId: allItems[24 - 1].id,
     recipeId: bread.id,
-    ammount: 0.2,
+    amount: 0.2,
   });
 
   await RecipeToItem.create({
     itemId: allItems[13 - 1].id,
     recipeId: bread.id,
-    ammount: 0.4,
+    amount: 0.4,
   });
 
 
@@ -232,7 +237,7 @@ const init = async () => {
   await RecipeToItem.create({
     itemId: allItems[8 - 1].id,
     recipeId: chocolateBar.id,
-    ammount: 0.4,
+    amount: 0.4,
   });
 
   const salmon = await Recipe.create({
@@ -246,13 +251,13 @@ const init = async () => {
   await RecipeToItem.create({
     itemId: allItems[15 - 1].id,
     recipeId: salmon.id,
-    ammount: 1,
+    amount: 1,
   });
 
   await RecipeToItem.create({
     itemId: allItems[5 - 1].id,
     recipeId: salmon.id,
-    ammount: 0.1,
+    amount: 0.1,
   });
 
 

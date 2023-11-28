@@ -9,9 +9,6 @@ export const getRandomRecipes = async () => {
     limit: 5
   });
   const nameArr = randomNames.map((name: any) => name.name);
-  console.log('???????????????????????????????????????????');
-  console.log(nameArr);
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
   return await Recipe.findAll({
     where: {
       name: nameArr
@@ -29,7 +26,7 @@ export const getRandomRecipes = async () => {
         as: 'item',
         attributes: ['id', 'name', 'unitSize', 'type'],
         through: {
-          attributes: ['ammount']
+          attributes: ['amount']
         }
       },
       {
@@ -42,31 +39,49 @@ export const getRandomRecipes = async () => {
       }
     ],
     group: ['recipe.id', 'item.id', 'item->recipeToItem.id'],
-    /* limit: 10,
-    subQuery: false, */
-    order: sequelize.random() /* [['name', 'DESC']], */
-    /* order: [['recipe.id', 'DESC']],
-    limit: 5, */
+    order: sequelize.random()
   });
 };
-/* ,
-{
-model: User,
-as: 'liked',
-attributes: ['id'],
-through: {
-attributes: ['userId', 'recipeId'],
-}
-} */
-/* ], */
-/* where: { TODO this will be needed later
-  ownerId: {
-    [Op.ne]: userId
-  }
-}, */
-/* order: sequelize.random()
+
+export const getMostLikedRecipes = async () => {
+  const randomNames = await Recipe.findAll({
+    order: [['liked', 'DESC']],
+    attributes: ['name'],
+    limit: 10
   });
-}; */
+  const nameArr = randomNames.map((name: any) => name.name);
+  return await Recipe.findAll({
+    where: {
+      name: nameArr
+    },
+    attributes: [
+      'id',
+      'name',
+      'description',
+      'imageUri',
+      [Sequelize.fn('COUNT', Sequelize.col('liked.id')), 'like_count']
+    ],
+    include: [
+      {
+        model: Item,
+        as: 'item',
+        attributes: ['id', 'name', 'unitSize', 'type'],
+        through: {
+          attributes: ['amount']
+        }
+      },
+      {
+        model: User,
+        as: 'liked',
+        attributes: [],
+        through: {
+          attributes: [],
+        }
+      }
+    ],
+    group: ['recipe.id', 'item.id', 'item->recipeToItem.id'],
+  });
+};
 
 export const getUsersRecipes = async (userId: number) => {
   return await Recipe.findAll({

@@ -24,6 +24,8 @@ const shoppingCartSlice = createSlice({
   initialState,
   reducers: {
     addProduct(state, action) {
+      console.log('state', state);
+      console.log('action.payload', action.payload);
       state.items.push(action.payload);
     },
     removeProduct(state, action) {

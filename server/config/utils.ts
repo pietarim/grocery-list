@@ -5,11 +5,11 @@ export const parseIncredient = (item: unknown): NewRecipesItem => {
     typeof item === 'object' &&
     item !== null &&
     'name' in item &&
-    'ammount' in item &&
+    'amount' in item &&
     'id' in item
   ) {
     const ing = item as {
-      name: unknown, ammount: unknown, id: unknown;
+      name: unknown, amount: unknown, id: unknown;
     };
 
     if (typeof ing.name !== 'string') {
@@ -17,8 +17,8 @@ export const parseIncredient = (item: unknown): NewRecipesItem => {
     }
 
     if (
-      typeof ing.ammount !== 'number') {
-      throw new Error('Invalid incredient ammount');
+      typeof ing.amount !== 'number') {
+      throw new Error('Invalid incredient amount');
     }
 
     if (typeof ing.id !== 'number') {

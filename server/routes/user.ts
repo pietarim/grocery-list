@@ -1,10 +1,10 @@
 import express from 'express';
-import { createUser } from '../controllers/user';
+import { createUser, getUsersController, updateUser } from '../controllers/user';
 
 const router = express.Router();
 
-router.get('/', async (_req, res) => {
-  createUser(_req, res);
-});
+router.post('/', createUser);
+router.put('/:id', updateUser);
+router.get('/', getUsersController);
 
 export default router;

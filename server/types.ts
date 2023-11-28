@@ -19,14 +19,14 @@ export enum ItemCategory {
 
 export interface NewRecipesItem {
   name: string;
-  ammount: number;
+  amount: number;
   id: number;
 }
 
 export interface NewRecipeToItem {
   recipeId: number;
   itemId: number;
-  ammount: number;
+  amount: number;
 }
 
 export interface NewItem {
@@ -44,4 +44,11 @@ export interface NewRecipe {
   ownerId: number;
   global: boolean;
   imageUri?: string;
+}
+
+export interface User {
+  username: string;
+  email: string;
+  passwordHash: string;
+  isAdmin: boolean;
 }

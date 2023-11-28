@@ -137,7 +137,7 @@ export const up = async ({ context: queryInterface }: { context: QueryInterface;
         key: 'id',
       },
     },
-    ammount: {
+    amount: {
       type: DataTypes.DECIMAL,
       allowNull: false,
     },
@@ -185,6 +185,34 @@ export const up = async ({ context: queryInterface }: { context: QueryInterface;
       defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
     },
   });
+  await queryInterface.createTable('friends', {
+    user_id1: {
+      type: DataTypes.INTEGER,
+      references: { model: 'users', key: 'id' },
+      primaryKey: true,
+      allowNull: false,
+    },
+    user_id2: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'users',
+        key: 'id',
+      },
+      primaryKey: true,
+      allowNull: false,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    },
+  });
+
 };
 
 export const down = async ({ context: queryInterface }: { context: QueryInterface; }) => {
@@ -193,4 +221,5 @@ export const down = async ({ context: queryInterface }: { context: QueryInterfac
   await queryInterface.dropTable('items');
   await queryInterface.dropTable('recipes');
   await queryInterface.dropTable('users');
+  await queryInterface.dropTable('friends');
 };

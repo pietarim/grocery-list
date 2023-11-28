@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import Recipe from './Recipe';
 import { getRandomRecipes } from "../services/recipes";
-import { Heading } from '@chakra-ui/react';
+import { Heading, Divider } from '@chakra-ui/react';
+import LoginForm from './Login';
 
 const ListRecipes = () => {
   useEffect(() => {
@@ -17,7 +18,10 @@ const ListRecipes = () => {
 
   return (
     <div>
+      <LoginForm />
       <Heading as='h2' size='2xl'>Recipes</Heading>
+      {/* <DetailedRecipe recipe={recipe[0]} /> */}
+      <Divider style={{ marginTop: '10px', color: 'black' }} />
       {recipe.map((recipe: any) => (
         <Recipe recipe={recipe} />
       ))

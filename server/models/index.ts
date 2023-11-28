@@ -3,6 +3,7 @@ import { Recipe } from './recipe';
 import { RecipeToItem } from './recipeToItem';
 import { User } from './user';
 import { RecipeLike } from './recipeLike';
+import { Friend } from './friend';
 
 Recipe.belongsTo(User, { foreignKey: 'ownerId' });
 User.hasMany(Recipe, { foreignKey: 'ownerId' });
@@ -12,5 +13,7 @@ Recipe.belongsToMany(User, { through: RecipeLike, as: 'liked' });
 User.belongsToMany(Recipe, { through: RecipeLike, as: 'liked' });
 User.hasMany(RecipeLike, { foreignKey: 'userId' });
 RecipeLike.belongsTo(User, { foreignKey: 'userId' });
+User.belongsToMany(User, { through: Friend, as: 'friends', foreignKey: 'user_id1', otherKey: 'user_id2' });
+User.belongsToMany(User, { through: Friend, as: 'friendsReverse', foreignKey: 'user_id2', otherKey: 'user_id1' });
 
 export { Item, Recipe, RecipeToItem, User, RecipeLike };

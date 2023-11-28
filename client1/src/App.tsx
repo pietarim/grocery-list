@@ -5,6 +5,8 @@ import { Tabs, TabList, Tab, TabPanel, TabPanels, Button } from "@chakra-ui/reac
 import './App.css';
 import ListRecipes from './Components/ListRecipes';
 import CreateRecipe from "./Components/CreateRecipe";
+import ShoppingList from "./Components/ShoppingList";
+import Friend from "./Components/Friend";
 
 
 function App() {
@@ -61,7 +63,10 @@ function App() {
             <CreateRecipe />
           </TabPanel>
           <TabPanel>
-            <p>four!</p>
+            <ShoppingList />
+          </TabPanel>
+          <TabPanel>
+            <Friend />
           </TabPanel>
         </TabPanels>
       </Tabs>

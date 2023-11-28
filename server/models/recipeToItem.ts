@@ -5,7 +5,7 @@ interface RecipeToItemAttributes {
   id: number;
   recipeId: number;
   itemId: number;
-  ammount: number;
+  amount: number;
 }
 
 type RecipeToItemCreationAttributes = Optional<RecipeToItemAttributes, 'id'>;
@@ -14,7 +14,7 @@ class RecipeToItem extends Model<RecipeToItemAttributes, RecipeToItemCreationAtt
   declare id: number;
   declare recipeId: number;
   declare itemId: number;
-  declare ammount: number;
+  declare amount: number;
 }
 RecipeToItem.init({
   id: {
@@ -38,7 +38,7 @@ RecipeToItem.init({
       key: 'id'
     },
   },
-  ammount: {
+  amount: {
     type: DataTypes.DECIMAL,
     allowNull: false
   }

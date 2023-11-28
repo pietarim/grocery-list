@@ -6,7 +6,7 @@ import { Item } from '../models/';
 import { ItemCategory, NewRecipesItem, NewRecipeToItem, NewRecipe } from '../types';
 import { parseIncredient, parseString, parseDescription, parseNumber, parseBoolean } from '../config/utils';
 import { getRecipeToItemById, createRecipeToItems, deleteRecipeToItems } from '../query/recipeToItem';
-import { getRandomRecipes, getUsersRecipes } from '../query/recipe';
+import { getRandomRecipes, getUsersRecipes, getMostLikedRecipes } from '../query/recipe';
 
 export const getUsersOwnRecipes = async (req: any, res: any) => {
   const { userId } = req.body;
@@ -21,10 +21,13 @@ export const getUsersOwnRecipes = async (req: any, res: any) => {
 };
 
 export const getIntroduceRecipes = async (req: any, res: any) => {
-  console.log('getintroducerecipes');
-  console.log('!!! controller started !!! controller started !!! controller started !!! controller started !!! controller started ');
   const recipes = await getRandomRecipes();
   /* console.log(recipes); */
+  res.json(recipes);
+};
+
+export const returnMostLikedRecipes = async (req: any, res: any) => {
+  const recipes = await getMostLikedRecipes();
   res.json(recipes);
 };
 
@@ -61,7 +64,7 @@ export const createRecipe = async (req: any, res: any) => {
     const itemList: NewRecipeToItem[] = parsedIncredients.map(
       (item: NewRecipesItem) => {
         return {
-          itemId: item.id, ammount: item.ammount, recipeId: recipe.id
+          itemId: item.id, amount: item.amount, recipeId: recipe.id
         };
       });
 
