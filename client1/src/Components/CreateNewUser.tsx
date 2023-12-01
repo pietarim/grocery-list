@@ -1,32 +1,61 @@
 import { Field, Form, Formik } from 'formik';
 import { FormControl, FormErrorMessage, FormLabel, Input, Button } from '@chakra-ui/react';
+/* import { useState } from 'react'; */
+import { SetUserProp } from '../types';
+import { register } from '../services/user';
 
-const CreateNewUser = () => {
-  function validateUsername() {
+const CreateNewUser = ({ setUser }: SetUserProp) => {/* 
+  const [user, setUser] = useState(null); */
+
+  function validateUsername(value) {
     let error;
     if (!value) {
       error = 'Username is required';
     }
+    return error;
   }
 
-  function validatePassword() {
+  function validatePassword(value) {
     let error;
     if (!value) {
       error = 'Password is required';
     }
+    return error;
   }
 
-  function validateEmail() {
+  function validateEmail(value) {
     let error;
     if (!value) {
       error = 'Email is required';
     }
+    return error;
   }
+
+  const handleCreateNewUserSubmit = async (newUser) => {
+    /* const newLogin = {
+      name: newUser.name,
+      password: newUser.password,
+      email: newUser.email,
+    }; */
+    console.log('newLogin', newUser);
+    console.log('käyttäjän luonti tapahtumassa');
+    const savedUser = await register(newUser);
+    console.log('savedUser', savedUser);
+    /* const savedLogin = await login(newLogin);
+    setUser(savedLogin); */
+  };
 
   return (
     <Formik
-
+      initialValues={{ username: '', email: '', password: '' }}
       onSubmit={(values, actions) => {
+        const newUser = {
+          username: values.username,
+          email: values.email,
+          password: values.password,
+        };
+        handleCreateNewUserSubmit(newUser);
+        console.log('submit handle is starting values', values);
         setTimeout(() => {
           alert(JSON.stringify(values, null, 2));
           actions.setSubmitting(false);
@@ -35,12 +64,21 @@ const CreateNewUser = () => {
     >
       {(props) => (
         <Form>
-          <Field name='name' validate={validateUsername}>
+          <Field name='username' validate={validateUsername}>
             {({ field, form }) => (
-              <FormControl isInvalid={form.errors.name && form.touched.name}>
-                <FormLabel>First name</FormLabel>
-                <Input {...field} placeholder='name' />
-                <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+              <FormControl isInvalid={form.errors.username && form.touched.username}>
+                <FormLabel>First username</FormLabel>
+                <Input {...field} placeholder='username' />
+                <FormErrorMessage>{form.errors.username}</FormErrorMessage>
+              </FormControl>
+            )}
+          </Field>
+          <Field name='email' validate={validatePassword}>
+            {({ field, form }) => (
+              <FormControl isInvalid={form.errors.email && form.touched.email}>
+                <FormLabel>Password</FormLabel>
+                <Input {...field} placeholder='email' />
+                <FormErrorMessage>{form.errors.email}</FormErrorMessage>
               </FormControl>
             )}
           </Field>

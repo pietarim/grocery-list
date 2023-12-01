@@ -1,4 +1,4 @@
-import { NewRecipesItem, ItemCategory } from '../types';
+import { NewRecipesItem, ItemCategory, TokenUser } from '../types';
 
 export const parseIncredient = (item: unknown): NewRecipesItem => {
   if (
@@ -36,6 +36,34 @@ export const parseCategory = (category: unknown): ItemCategory => {
   throw new Error('Invalid category');
 };
 
+export const parseUser = (user: unknown): TokenUser => {
+  if (
+    typeof user === 'object' &&
+    user !== null &&
+    'username' in user &&
+    'id' in user &&
+    'email' in user
+  ) {
+    const usr = user as { username: unknown, id: unknown; email: unknown; };
+
+    if (typeof usr.username !== 'string') {
+      throw new Error('Invalid username');
+    }
+
+    if (typeof usr.id !== 'number') {
+      throw new Error('Invalid id');
+    }
+
+    if (typeof usr.email !== 'string') {
+      throw new Error('Invalid email');
+    }
+
+    return usr as TokenUser;
+  }
+
+  throw new Error('Invalid user');
+};
+
 /* export const parseIncredient = (: unknown): NewRecipesItem => {
   if (
     typeof  === 'object' &&
@@ -60,9 +88,12 @@ export const parseCategory = (category: unknown): ItemCategory => {
   throw new Error('Invalid incredient');
 }; */
 
-export const parseString = (name: unknown): string => {
-  if (typeof name === 'string') {
-    return name;
+export const parseString = (username: unknown): string => {
+  console.log(username);
+  console.log('parseString');
+  if (typeof username === 'string') {
+    console.log('parseString if');
+    return username;
   }
   throw new Error('Invalid name');
 };

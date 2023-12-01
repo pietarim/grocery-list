@@ -1,10 +1,14 @@
 require('express-async-errors');
+import dotenv from 'dotenv';
 import express from 'express';
 import config from './config/config';
 import { userRouter, recipeRouter, itemRouter, imageRouter, authRouter } from './routes';
 import cors from 'cors';
+import { errorHandler } from './middleware/errorHandler';
+
 const { Model, DataTypes, Sequelize, QueryTypes } = require('sequelize');
 
+dotenv.config();
 const app = express();
 const port = 3001;
 
@@ -41,6 +45,7 @@ app.use('/api/recipes', recipeRouter);
 app.use('/api/items', itemRouter);
 app.use('/api/recipeLikes', recipeRouter);
 app.use('/api/auth', authRouter);
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

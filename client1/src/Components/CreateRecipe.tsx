@@ -3,58 +3,32 @@ import {
   Box, useRadioGroup, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper,
   Card, CardBody
 } from '@chakra-ui/react';
+import RadioCard from './RadioCard';
 import { Field, Form, Formik } from 'formik';
 import { useState, useEffect } from 'react';
 import { getItems } from '../services/items';
+import { LoggedInUserProp, Recipe } from '../types';
+import { createRecipe } from '../services/recipes';
+import { useAxios } from '../hooks/useAxios';
+import { set } from 'lodash';
 
-const RadioCard = (props) => {
-  const { getInputProps, getCheckboxProps } = useRadio(props);
-
-  const input = getInputProps();
-  /* console.log(input.value.name);
-  console.log('input'); */
-  /* props.setSelected(input.value.name); */
-  const checkbox = getCheckboxProps();
-  /* console.log(checkbox); */
-
-
-  return (
-    <Box as='label'>
-      <input {...input} />
-      <Box
-        {...checkbox}
-        cursor='pointer'
-        borderWidth='1px'
-        borderRadius='md'
-        boxShadow='md'
-        _checked={{
-          bg: 'teal.600',
-          color: 'white',
-          borderColor: 'teal.600',
-        }}
-        _focus={{
-          boxShadow: 'outline',
-        }}
-        px={5}
-        py={3}
-      >
-        {props.children}
-      </Box>
-    </Box>
-  );
-};
 
 interface Item {
-  item: string;
+  /* item: string; */
+  name: string;
   amount: string;
+  id: number;
 }
 
-const CreateRecipe = () => {
+const CreateRecipe = ({ user }: LoggedInUserProp) => {
   const [items, setItems] = useState([]);
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState<Item | null>(null);
   const [itemAmount, setItemAmount] = useState('');
   const [itemArray, setItemArray] = useState<Item[]>([]);
   const [image, setImage] = useState(null);
+
+  const { post } = useAxios();
+  console.log(user);
 
   const handleImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -72,8 +46,6 @@ const CreateRecipe = () => {
   }, []);
 
   const itemsWithTitles = items.reduce((acc: any, item: any) => {
-    /* const lastIndex = acc.length ? acc.length - 1 : 0; */
-    /* console.log(lastIndex); */
     if (!acc.length) {
       return [{ ...item,/* : item.type, */ style: 'title', name: "", isTitle: item.type }, { ...item, style: 'item', isTitle: "" }];
     } else if (acc[acc.length - 1].type === item.type) {
@@ -89,7 +61,20 @@ const CreateRecipe = () => {
     setSelected(items[parseInt(e)]);
   };
 
-  /* console.log(itemsWithTitles); */
+  const addItemsToArr = (isFirst: boolean) => {
+    console.log(itemAmount);
+    if (!selected || itemAmount === '0') {
+      return;
+    } else if (isFirst) {
+      setItemArray([{ name: selected.name, amount: itemAmount, id: selected.id }]);
+      setSelected(null);
+      setItemAmount('0');
+    } else {
+      setItemArray([...itemArray, { name: selected.name, amount: itemAmount, id: selected.id }]);
+      setSelected(null);
+      setItemAmount('0');
+    }
+  };
 
   const returnTitle = (title) => {
     return (
@@ -102,8 +87,14 @@ const CreateRecipe = () => {
     if (!itemArray.length) {
       return (
         <>
-          <Text style={{ backgroundColor: "lime", margin: '3px', borderRadius: '20px', display: 'inline-block', padding: '4px' }}>{selected.name}</Text>
-          <Button onClick={() => setItemArray([{ item: selected.name, amount: itemAmount }])}>Add</Button>
+          <Text style={{
+            backgroundColor: "lime",
+            margin: '3px',
+            borderRadius: '20px',
+            display: 'inline-block',
+            padding: '4px'
+          }}>{selected ? selected.name : 'pick item'}</Text>
+          <Button onClick={() => addItemsToArr(true)}>Add</Button>
         </>
       );
     } else {
@@ -111,27 +102,15 @@ const CreateRecipe = () => {
         <>
           <List>
             {itemArray.map((item, id) => {
-              return <ListItem style={{ backgroundColor: "lime", margin: '3px', borderRadius: '20px', display: 'inline-block', padding: '4px' }} key={id}>{item.item} {item.amount}</ListItem>;
+              return <ListItem style={{ backgroundColor: "lime", margin: '3px', borderRadius: '20px', display: 'inline-block', padding: '4px' }} key={id}>{item.name} {item.amount}</ListItem>;
             })}
           </List>
-          <Text>{selected.name ? selected.name : "pick item"}</Text>
-          <Button onClick={() => setItemArray([...itemArray, { item: selected.name, amount: itemAmount }])}>Add</Button>
+          <Text>{selected ? selected.name : "pick item"}</Text>
+          <Button onClick={() => addItemsToArr(false)}>Add</Button>
         </>
       );
     }
   };
-
-
-  /* const returnItems = () => {
-    return (
-      <List className='category'>
-        {
-          itemsWithTitles.map((i: any) => (<ListItem className={`${i.style} list-item-container`} key={i.id}>{i.name} {i.isTitle}</ListItem>
-          ))
-        }
-      </List>
-    );
-  }; */
 
   function validateName(value) {
     let error;
@@ -160,13 +139,35 @@ const CreateRecipe = () => {
 
   const group = getRootProps();
 
+  const handleRecipeSubmit = async (recipe: any) => {
+    const newRecipe = {
+      name: recipe.name,
+      description: recipe.description,
+      public: recipe.public,
+      imageUri: recipe.imageUri,
+      global: recipe.global,
+    };
+    /* const savedRecipe =  *//* await createRecipe(newRecipe); */
+    console.log(newRecipe);
+    await post('http://localhost:3001/api/recipes', newRecipe);
+  };
+
   return (
     <Flex>
       <Card style={{ width: '1260px' }} size='lg'>
         <CardBody>
           <Formik
-            initialValues={{ name: '', password: '', public: false }}
+            initialValues={{ name: '', description: '', public: false }}
             onSubmit={(values, actions) => {
+              console.log('submitting on käynnissä');
+              const recipe = {
+                name: values.name,
+                description: values.description,
+                public: values.public,
+                global: false,
+                ingredients: itemArray,
+              };
+              handleRecipeSubmit(recipe);
               setTimeout(() => {
                 alert(JSON.stringify(values, null, 2));
                 actions.setSubmitting(false);
@@ -184,24 +185,16 @@ const CreateRecipe = () => {
                     </FormControl>
                   )}
                 </Field>
-                <Field name='password' validate={validatePassword}>
+                <Field name='description' validate={validatePassword}>
                   {({ field, form }) => (
-                    <FormControl isInvalid={form.errors.password && form.touched.password}>
-                      <FormLabel>22</FormLabel>
-                      <Input {...field} placeholder='password' type='password' />
-                      <FormErrorMessage>{form.errors.password}</FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-                <Field name='password' validate={validatePassword}>
-                  {({ field, form }) => (
-                    <FormControl isInvalid={form.errors.password && form.touched.password}>
-                      <FormLabel>Password</FormLabel>
+                    <FormControl isInvalid={form.errors.description && form.touched.description}>
+                      <FormLabel>Recipe description</FormLabel>
                       <Textarea
+                        {...field}
                         placeholder='Here is a sample placeholder'
                         size='sm'
                       />
-                      <FormErrorMessage>{form.errors.password}</FormErrorMessage>
+                      <FormErrorMessage>{form.errors.description}</FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
@@ -222,9 +215,9 @@ const CreateRecipe = () => {
                 {/* <Text>Halojaa: {selected}</Text> */}
                 {returnItemArray()}
                 <NumberInput
-
                   onChange={(valueString) => setItemAmount(valueString)}
-                  value={itemAmount}>
+                  value={itemAmount}
+                >
                   <NumberInputField />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
@@ -251,25 +244,5 @@ const CreateRecipe = () => {
     </Flex>
   );
 };
-{/* {returnItems()} */ }
-
-{/* <div>
-      <Flex>
-        <div>
-          <FormControl isRequired>
-            <FormLabel>Name</FormLabel>
-            <Input placeholder='name' />
-          </FormControl>
-          <Text mb='8px'>Value: </Text>
-          <Textarea
-            placeholder='Here is a sample placeholder'
-            size='sm'
-          />
-          <Button colorScheme='teal' variant='outline'>Create</Button>
-        </div>
-        <Divider orientation='vertical' />
-        {returnItems()}
-      </Flex >
-    </div> */}
 
 export default CreateRecipe;

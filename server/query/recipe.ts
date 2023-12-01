@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize';
 import { sequelize } from '../config/db';
 import { Recipe, Item, User } from '../models';
+import { NewRecipe } from '../types';
 
 export const getRandomRecipes = async () => {
   const randomNames = await Recipe.findAll({
@@ -89,4 +90,8 @@ export const getUsersRecipes = async (userId: number) => {
       ownerId: userId
     }
   });
+};
+
+export const createRecipe = async (recipe: NewRecipe) => {
+  return await Recipe.create(recipe);
 };

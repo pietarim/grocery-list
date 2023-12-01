@@ -46,9 +46,15 @@ export interface NewRecipe {
   imageUri?: string;
 }
 
-export interface User {
+export interface UserType {
   username: string;
   email: string;
   passwordHash: string;
   isAdmin: boolean;
+}
+
+export interface TokenUser {
+  id: number;
+  username: string;
+  email: string;
 }

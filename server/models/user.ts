@@ -7,6 +7,7 @@ interface UserAttributes {
   email: string;
   passwordHash: string;
   isAdmin: boolean;
+  refreshToken?: string;
 }
 
 type UserCreationAttributes = Optional<UserAttributes, 'id'>;
@@ -16,6 +17,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   declare username: string;
   declare email: string;
   declare passwordHash: string;
+  declare refreshToken: string;
   declare isAdmin: boolean;
 }
 
@@ -41,6 +43,9 @@ User.init({
   passwordHash: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  refreshToken: {
+    type: DataTypes.STRING
   },
   isAdmin: {
     type: DataTypes.BOOLEAN,
