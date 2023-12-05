@@ -17,13 +17,14 @@ export const parseIncredient = (item: unknown): NewRecipesItem => {
     }
 
     if (
-      typeof ing.amount !== 'number') {
+      typeof ing.amount !== 'string') {
       throw new Error('Invalid incredient amount');
     }
 
     if (typeof ing.id !== 'number') {
       throw new Error('Invalid incredient id');
     }
+    return ing as NewRecipesItem;
   }
 
   throw new Error('Invalid incredient');
@@ -63,30 +64,6 @@ export const parseUser = (user: unknown): TokenUser => {
 
   throw new Error('Invalid user');
 };
-
-/* export const parseIncredient = (: unknown): NewRecipesItem => {
-  if (
-    typeof  === 'object' &&
-     !== null &&
-    'name' in  &&
-    'itemCategory' in 
-  ) {
-    const ing =  as { name: unknown, itemCategory: unknown; };
-
-    if (typeof ing.name !== 'string') {
-      throw new Error('Invalid incredient name');
-    }
-
-    if (
-      typeof ing.itemCategory === 'string' &&
-      Object.values(ItemCategory).includes(ing.itemCategory as ItemCategory)
-    ) {
-      return ing as NewRecipesItem;
-    }
-  }
-
-  throw new Error('Invalid incredient');
-}; */
 
 export const parseString = (username: unknown): string => {
   console.log(username);

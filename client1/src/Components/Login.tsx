@@ -1,6 +1,6 @@
 import { Field, Form, Formik } from 'formik';
 import { FormControl, FormErrorMessage, FormLabel, Input, Button } from '@chakra-ui/react';
-import { SetUserProp } from '../types';
+/* import { SetUserProp } from '../types'; */
 import { login } from '../services/user';
 import { useAuth } from '../hooks/useAuth';
 
@@ -15,7 +15,7 @@ interface setUserProp {
   setUser: (user: UserState) => void;
 }
  */
-function LoginForm({ setUser }: SetUserProp) {
+function LoginForm(/* { setUser }: SetUserProp */) {
   const { setToken } = useAuth();
   function validateName(value) {
     let error;

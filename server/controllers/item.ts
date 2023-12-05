@@ -33,28 +33,8 @@ export const getAllItems = async (_req: Request, res: Response, next: NextFuncti
 
 export const addItem = async (req: Request, res: Response, next: NextFunction) => {
   const parsedItem = parseRecipeItem(req.body);
-  /* const { name, unitSize, brand, price, type } = req.body; */
-  /* if (!name || !unitSize || !brand || !price || !type) {
-    return next(new Error('Missing parameters'));
-  }
-
-  const parsedType = parseCategory(type);
-  const parsedUnitSize = parseNumber(unitSize);
-  const parsedName = parseString(name);
-  const parsedBrand = parseString(brand);
-  const parsedPrice = parseNumber(price);
-  const pricePerUnit = parsedPrice / parsedUnitSize;
-
-  const parsedItem = {
-    name: parsedName,
-    type: parsedType,
-    unitSize: parsedUnitSize,
-    brand: parsedBrand,
-    price: parsedPrice,
-    pricePerUnit
-  }; */
-
   const NewRecipesItem = await createItem(parsedItem);
+
   if (!NewRecipesItem) {
     return next(new Error('Item could not be created'));
   }

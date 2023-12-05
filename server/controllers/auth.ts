@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { getUserByUsername, createUser, addRefreshtoken, getUserByRefreshToken } from '../query/user';
+import { getUserByUsername, createUser, addRefreshtoken, getUserByRefreshToken, removeRefreshtoken } from '../query/user';
 import { parseString } from '../config/utils';
 import crypto from 'crypto';
 
@@ -10,6 +10,7 @@ interface RequestWithUser extends Request {
 }
 
 interface User {
+  id: number;
   username: string;
   password: string;
   email: string;
@@ -49,11 +50,12 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     addRefreshtoken(userFromDb.id, refreshToken);
 
     const token = jwt.sign(userForToken, process.env.SECRET as string, { expiresIn: '2m' });
+    console.log('tämä refresh token tunkataan eteenpäin', refreshToken);
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      secure: true,
+      secure: false,
       maxAge: 1000 * 60 * 60 * 24 * 7,
-      sameSite: 'strict'
+      sameSite: 'none'
     });
     res.status(200).send({ token, username: userFromDb.username, id: userFromDb.id });
   }
@@ -87,7 +89,9 @@ export const extractUser = (req: RequestWithUser, res: Response, next: NextFunct
 };
 
 export const getAccessToken = async (req: Request, res: Response, next: NextFunction) => {
+  console.log('kysely');
   const refreshToken = req.cookies.refreshToken;
+  console.log('getAccessToken opened getAccessToken opened getAccessToken opened getAccessToken opened ');
   console.log(refreshToken);
   const user = await getUserByRefreshToken(refreshToken);
   console.log(user);
@@ -103,6 +107,16 @@ export const getAccessToken = async (req: Request, res: Response, next: NextFunc
     const token = jwt.sign(userForToken, process.env.SECRET as string, { expiresIn: '2m' });
     res.status(200).send({ token, username: user.username, id: user.id });
   }
+};
+
+export const logout = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  if (!req.user) {
+    throw new Error('401');
+  }
+  const userId = req.user.id;
+  await removeRefreshtoken(userId);
+  res.cookie('refreshToken', '', { expires: new Date(0), httpOnly: true });
+  res.send('logged out');
 };
 
 export default router;

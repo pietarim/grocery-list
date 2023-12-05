@@ -5,18 +5,18 @@ export const useAxios = () => {
   const { token, setToken } = useAuth();
 
   const axiosInstance = axios.create({
-    baseURL: 'localhost:3001/api',
+    baseURL: 'http://localhost:3001/api',
   });
 
   if (token) {
-    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token.token}`;
   }
 
   const refreshAccessToken = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/auth/access-token');
+      const response = await axios.get('http://localhost:3001/api/auth/access-token', { withCredentials: true });
       const newAccessToken = response.data.accessToken;
-      setToken(newAccessToken);
+      setToken({ token: newAccessToken.token, username: newAccessToken.username, id: newAccessToken.id });
       return newAccessToken;
     } catch (error) {
       console.error('Error refreshing access token', error);
@@ -27,15 +27,17 @@ export const useAxios = () => {
   axiosInstance.interceptors.response.use(
     response => response,
     async error => {
-      const originalRequest = error.config;
-      if (error.response.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true;
-        const newAccessToken = await refreshAccessToken();
-        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-        return axiosInstance(originalRequest);
+      if (error.response) {
+        const originalRequest = error.config;
+        if (error.response.status === 401 && !originalRequest._retry) {
+          originalRequest._retry = true;
+          const newAccessToken = await refreshAccessToken();
+          axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+          originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+          return axiosInstance(originalRequest);
+        }
+        return Promise.reject(error);
       }
-      return Promise.reject(error);
     }
   );
 
@@ -44,10 +46,6 @@ export const useAxios = () => {
   };
 
   const post = async (url: string, data = {}, config = {}) => {
-    console.log('postissa');
-    console.log(url);
-    console.log(data);
-    console.log(config);
     return await axiosInstance.post(url, data, config);
   };
 

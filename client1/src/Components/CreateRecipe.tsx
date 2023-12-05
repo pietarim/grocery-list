@@ -1,16 +1,13 @@
 import {
-  FormControl, FormLabel, Input, FormErrorMessage, Wrap, Text, Textarea, Flex, List, ListItem, Button, useRadio,
-  Box, useRadioGroup, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper,
+  FormControl, FormLabel, Input, FormErrorMessage, Wrap, Text, Textarea, Flex, List, ListItem, Button,
+  useRadioGroup, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper,
   Card, CardBody
 } from '@chakra-ui/react';
 import RadioCard from './RadioCard';
 import { Field, Form, Formik } from 'formik';
 import { useState, useEffect } from 'react';
 import { getItems } from '../services/items';
-import { LoggedInUserProp, Recipe } from '../types';
-import { createRecipe } from '../services/recipes';
 import { useAxios } from '../hooks/useAxios';
-import { set } from 'lodash';
 
 
 interface Item {
@@ -20,15 +17,17 @@ interface Item {
   id: number;
 }
 
-const CreateRecipe = ({ user }: LoggedInUserProp) => {
+const CreateRecipe = ({ isMobile }: any) => {
   const [items, setItems] = useState([]);
   const [selected, setSelected] = useState<Item | null>(null);
   const [itemAmount, setItemAmount] = useState('');
   const [itemArray, setItemArray] = useState<Item[]>([]);
   const [image, setImage] = useState(null);
 
+  console.log(isMobile);
+
   const { post } = useAxios();
-  console.log(user);
+  /* console.log(user); */
 
   const handleImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -146,16 +145,104 @@ const CreateRecipe = ({ user }: LoggedInUserProp) => {
       public: recipe.public,
       imageUri: recipe.imageUri,
       global: recipe.global,
+      incredients: itemArray,
     };
     /* const savedRecipe =  *//* await createRecipe(newRecipe); */
-    console.log(newRecipe);
-    await post('http://localhost:3001/api/recipes', newRecipe);
+    await post('http://localhost:3001/api/recipes', newRecipe, { withCredentials: true });
   };
 
-  return (
-    <Flex>
-      <Card style={{ width: '1260px' }} size='lg'>
-        <CardBody>
+  if (!isMobile) {
+    return (
+      <Flex>
+        <Card style={{ width: '1260px' }} size='lg'>
+          <CardBody>
+            <Formik
+              initialValues={{ name: '', description: '', public: false }}
+              onSubmit={(values, actions) => {
+                console.log('submitting on käynnissä');
+                const recipe = {
+                  name: values.name,
+                  description: values.description,
+                  public: values.public,
+                  global: false,
+                  ingredients: itemArray,
+                };
+                handleRecipeSubmit(recipe);
+                actions.setSubmitting(false);
+              }}
+            >
+              {(props) => (
+                <Form>
+                  <Field name='name' validate={validateName}>
+                    {({ field, form }) => (
+                      <FormControl isInvalid={form.errors.name && form.touched.name}>
+                        <FormLabel>Recipe name</FormLabel>
+                        <Input {...field} placeholder='name' />
+                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                  <Field name='description' validate={validatePassword}>
+                    {({ field, form }) => (
+                      <FormControl isInvalid={form.errors.description && form.touched.description}>
+                        <FormLabel>Recipe description</FormLabel>
+                        <Textarea
+                          {...field}
+                          placeholder='Here is a sample placeholder'
+                          size='sm'
+                        />
+                        <FormErrorMessage>{form.errors.description}</FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                  <input type='file' accept='image/*' onChange={handleImageChange} />
+                  <label>
+                    <Field type='checkbox' name='public' />
+                    Make public
+                  </label>
+                  <Button
+                    mt={4}
+                    colorScheme='teal'
+                    isLoading={props.isSubmitting}
+                    type='submit'
+                  >
+                    Submit
+                  </Button>
+                  {returnItemArray()}
+                  <NumberInput
+                    onChange={(valueString) => setItemAmount(valueString)}
+                    value={itemAmount}
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </Form>
+              )}
+            </Formik></CardBody>
+        </Card>
+        <Wrap {...group}>
+          {options.map((value, n) => {
+            const radio = getRadioProps({ value: n });
+
+            return (
+              <>
+                <RadioCard key={n} setSelected={setSelected} {...radio}>
+                  {value.name}
+                </RadioCard>
+              </>
+            );
+          })}
+        </Wrap>
+      </Flex>
+    );
+  } else {
+    return (
+      <>
+        <Card /* style={{ width: '1260px' }} */ size='lg'>
+          {/* <CardBody> */}
           <Formik
             initialValues={{ name: '', description: '', public: false }}
             onSubmit={(values, actions) => {
@@ -168,10 +255,7 @@ const CreateRecipe = ({ user }: LoggedInUserProp) => {
                 ingredients: itemArray,
               };
               handleRecipeSubmit(recipe);
-              setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                actions.setSubmitting(false);
-              }, 1000);
+              actions.setSubmitting(false);
             }}
           >
             {(props) => (
@@ -211,8 +295,6 @@ const CreateRecipe = ({ user }: LoggedInUserProp) => {
                 >
                   Submit
                 </Button>
-                {/* <Checkbox>Make publiccc</Checkbox> */}
-                {/* <Text>Halojaa: {selected}</Text> */}
                 {returnItemArray()}
                 <NumberInput
                   onChange={(valueString) => setItemAmount(valueString)}
@@ -226,23 +308,23 @@ const CreateRecipe = ({ user }: LoggedInUserProp) => {
                 </NumberInput>
               </Form>
             )}
-          </Formik></CardBody>
-      </Card>
-      <Wrap {...group}>
-        {options.map((value, n) => {
-          const radio = getRadioProps({ value: n });
+          </Formik>
+        </Card>
+        <Wrap {...group}>
+          {options.map((value, n) => {
+            const radio = getRadioProps({ value: n });
 
-          return (
-            <>
-              <RadioCard key={n} setSelected={setSelected} {...radio}>
-                {value.name}
-              </RadioCard>
-            </>
-          );
-        })}
-      </Wrap>
-    </Flex>
-  );
+            return (
+              <>
+                <RadioCard key={n} setSelected={setSelected} {...radio}>
+                  {value.name}
+                </RadioCard>
+              </>
+            );
+          })}
+        </Wrap>
+      </>);
+  }
 };
 
 export default CreateRecipe;

@@ -115,7 +115,6 @@ export const updateRecipe = async (recipe: NewRecipe, id: number, ingredients: a
     });
     await transaction.commit();
   } catch (error) {
-    console.log(error);
     await transaction.rollback();
     throw new Error('Something went wrong');
   }

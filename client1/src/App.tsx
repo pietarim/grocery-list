@@ -1,114 +1,123 @@
 import { useState, useEffect } from 'react';
-import { Tabs, TabList, Tab, TabPanel, TabPanels, Button } from "@chakra-ui/react";
+import { Tabs, TabList, Tab, TabPanel, TabPanels, Button, Text, Menu, MenuButton, MenuList, MenuItem, IconButton } from "@chakra-ui/react";
+import { HamburgerIcon } from '@chakra-ui/icons';
 import './App.css';
 import ListRecipes from './Components/ListRecipes';
 import CreateRecipe from "./Components/CreateRecipe";
 import ShoppingList from "./Components/ShoppingList";
 import Login from "./Components/Login";
-import Friend from "./Components/Friend";
-import { LoggedInUserState } from './types';
 import CreateNewUser from './Components/CreateNewUser';
 import { useAxios } from './hooks/useAxios';
-import { useAuth } from './context/AuthContext';
+import { useAuth } from './hooks/useAuth';
 
 function App() {
-  const { setToken } = useAuth();
-  /* const [user, setUser] = useState<LoggedInUserState>(null); */
-  /* const [recipe, setRecipe] = useState<Recipe[]>([]);
-  const [imageUri, setImageUri] = useState<string>("null"); */
+  const { setToken, token } = useAuth();
+  const { get } = useAxios();
+  const [isMobileView, setIsMobileView] = useState(false);
+  const [mobileRoute, setMobileRoute] = useState<string>('');
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsMobileView(true);
+      } else {
+        setIsMobileView(false);
+      }
+    };
+    window.addEventListener('resize', handleResize); // TODO is this doing anything?
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const getAuthUser = async () => {
-      const user = await useAxios.get('/auth');
-      setToken({ token: user.data.token, username: user.data.username, id: user.data.id });
+      try {
+        const user = await get('/auth/access-token', { withCredentials: true });
+        setToken({ token: user.data.token, username: user.data.username, id: user.data.id }); // handle error
+      } catch (err) {
+        console.log('not logged in');
+      }
+
     };
     getAuthUser();
-    /* const loggedInUser = localStorage.getItem('user');
-    if (loggedInUser) {
-      const foundUser = JSON.parse(loggedInUser);
-      setUser(foundUser);
-    } */
   }, []);
 
   const handleLogout = () => {
-    setUser(null);
-    localStorage.clear();
+    setToken(null);
   };
 
-  if (!user) {
+  if (!token) {
     return (
       <div>
-        <Login setUser={setUser} />
-        <CreateNewUser setUser={setUser} />
+        <Login />
+        <CreateNewUser />
       </div>
     );
   } else {
-    return (
-      <div>
-        <Tabs variant='enclosed'>
-          <TabList>
-            <Tab>Discover recipes</Tab>
-            <Tab>My recipes</Tab>
-            <Tab>Create recipe</Tab>
-            <Tab>Shopping cart</Tab>
-            <Tab>Friends</Tab>
-            <Button onClick={() => handleLogout()}>Log out</Button>
-          </TabList>
+    if (isMobileView) {
+      const returnMobileRoute = () => {
+        switch (mobileRoute) {
+          case "view":
+            return <ListRecipes isMobile={true} />;
+          case "create":
+            return <CreateRecipe isMobile={true} />;
+          case "shopping-cart":
+            return <ShoppingList isMobile={true} />;
+          default:
+            return <ListRecipes isMobile={true} />;
+        }
+      };
+      return (
+        <>
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              aria-label='Options'
+              icon={<HamburgerIcon />}
+              variant='outline'
+            />
+            <MenuList>
+              <MenuItem onClick={() => setMobileRoute("view")}>Discover recipes</MenuItem>
+              <MenuItem onClick={() => setMobileRoute("create")}>Create recipe</MenuItem>
+              <MenuItem onClick={() => setMobileRoute("shopping-cart")}>Shopping list</MenuItem>
+              <MenuItem onClick={() => handleLogout()}>Log out</MenuItem>
+            </MenuList>
+          </Menu>
+          {returnMobileRoute()}
+        </>
+      );
+    } else if (!isMobileView) {
+      return (
+        <div>
+          <Tabs variant='enclosed'>
+            <TabList>
+              <Tab>Discover recipes</Tab>
+              <Tab>My recipes</Tab>
+              <Tab>Create recipe</Tab>
+              <Tab>Shopping cart</Tab>
+              <Tab>Friends</Tab>
+              <Text>User: {token.username} logged in</Text>
+              <Button onClick={() => handleLogout()}>Log out</Button>
+            </TabList>
 
-          <TabPanels>
-            <TabPanel>
-              <ListRecipes />
-            </TabPanel>
-            <TabPanel>
-              <p>two!</p>
-            </TabPanel>
-            <TabPanel>
-              <CreateRecipe user={user} />
-            </TabPanel>
-            <TabPanel>
-              <ShoppingList />
-            </TabPanel>
-            <TabPanel>
-              <Friend />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </div>
-    );
+            <TabPanels>
+              <TabPanel>
+                <ListRecipes isMobile={false} />
+              </TabPanel>
+              <TabPanel>
+                <p>two!</p>
+              </TabPanel>
+              <TabPanel>
+                <CreateRecipe />
+              </TabPanel>
+              <TabPanel>
+                <ShoppingList />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </div>
+      );
+    }
   }
-
 }
-/* return (
-  <div>
-    <Tabs variant='enclosed'>
-      <TabList>
-        <Tab>Discover recipes</Tab>
-        <Tab>My recipes</Tab>
-        <Tab>Create recipe</Tab>
-        <Tab>Shopping cart</Tab>
-        <Tab>Friends</Tab>
-        <Button>Log out</Button>
-      </TabList>
-
-      <TabPanels>
-        <TabPanel>
-          <ListRecipes />
-        </TabPanel>
-        <TabPanel>
-          <p>two!</p>
-        </TabPanel>
-        <TabPanel>
-          <CreateRecipe user={user} />
-        </TabPanel>
-        <TabPanel>
-          <ShoppingList />
-        </TabPanel>
-        <TabPanel>
-          <Friend />
-        </TabPanel>
-      </TabPanels>
-    </Tabs>
-  </div>
-); */
 
 export default App;

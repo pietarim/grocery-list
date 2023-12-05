@@ -1,10 +1,8 @@
 import { Field, Form, Formik } from 'formik';
 import { FormControl, FormErrorMessage, FormLabel, Input, Button } from '@chakra-ui/react';
-/* import { useState } from 'react'; */
-import { SetUserProp } from '../types';
 import { register } from '../services/user';
 
-const CreateNewUser = ({ setUser }: SetUserProp) => {/* 
+const CreateNewUser = (/* { setUser }: SetUserProp */) => {/* 
   const [user, setUser] = useState(null); */
 
   function validateUsername(value) {
@@ -32,17 +30,7 @@ const CreateNewUser = ({ setUser }: SetUserProp) => {/*
   }
 
   const handleCreateNewUserSubmit = async (newUser) => {
-    /* const newLogin = {
-      name: newUser.name,
-      password: newUser.password,
-      email: newUser.email,
-    }; */
-    console.log('newLogin', newUser);
-    console.log('käyttäjän luonti tapahtumassa');
-    const savedUser = await register(newUser);
-    console.log('savedUser', savedUser);
-    /* const savedLogin = await login(newLogin);
-    setUser(savedLogin); */
+    await register(newUser);
   };
 
   return (

@@ -1,4 +1,3 @@
-import { Model, DataTypes, Sequelize } from 'sequelize';
 import { User } from '../models/user';
 import { UserType } from '../types';
 
@@ -38,8 +37,6 @@ export const getUserByUsername = async (username: string) => {
 export const createUser = async (user: UserType) => {
   const savedUser = await User.create(user);
   const user2 = await User.findAll({ where: { username: user.username } });
-  console.log(user2);
-  console.log('yläpuolella on savedUser');
   return user2;
 };
 
@@ -63,6 +60,19 @@ export const addRefreshtoken = async (id: number, token: string) => {
   await User.update(
     {
       refreshToken: token,
+    },
+    {
+      where: {
+        id,
+      },
+    }
+  );
+};
+
+export const removeRefreshtoken = async (id: number) => {
+  await User.update(
+    {
+      refreshToken: null,
     },
     {
       where: {

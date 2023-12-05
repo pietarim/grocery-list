@@ -27,6 +27,7 @@ export const up = async ({ context: queryInterface }: { context: QueryInterface;
     },
     refreshToken: {
       type: DataTypes.STRING,
+      allowNull: true,
     },
     createdAt: {
       type: DataTypes.DATE,
