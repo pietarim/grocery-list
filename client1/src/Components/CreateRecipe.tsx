@@ -101,7 +101,10 @@ const CreateRecipe = ({ isMobile }: any) => {
         <>
           <List>
             {itemArray.map((item, id) => {
-              return <ListItem style={{ backgroundColor: "lime", margin: '3px', borderRadius: '20px', display: 'inline-block', padding: '4px' }} key={id}>{item.name} {item.amount}</ListItem>;
+              return <ListItem
+                style={{ backgroundColor: "lime", margin: '3px', borderRadius: '20px', display: 'inline-block', padding: '4px' }}
+                key={id}>{item.name} {item.amount}
+              </ListItem>;
             })}
           </List>
           <Text>{selected ? selected.name : "pick item"}</Text>

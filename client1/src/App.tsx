@@ -9,6 +9,7 @@ import Login from "./Components/Login";
 import CreateNewUser from './Components/CreateNewUser';
 import { useAxios } from './hooks/useAxios';
 import { useAuth } from './hooks/useAuth';
+import Friend from './Components/Friend';
 
 function App() {
   const { setToken, token } = useAuth();
@@ -107,10 +108,13 @@ function App() {
                 <p>two!</p>
               </TabPanel>
               <TabPanel>
-                <CreateRecipe />
+                {/* <CreateRecipe /> */}
               </TabPanel>
               <TabPanel>
                 <ShoppingList />
+              </TabPanel>
+              <TabPanel>
+                <Friend />
               </TabPanel>
             </TabPanels>
           </Tabs>

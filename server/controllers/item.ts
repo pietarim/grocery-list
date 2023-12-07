@@ -22,13 +22,36 @@ const parseRecipeItem = (item: any) => {
   };
 };
 
+const transformItems = (items: any) => {
+  const groupedByType = items.reduce((acc: any, item: any) => {
+    const itemsType = item.type;
+    if (!acc[itemsType]) {
+      acc[itemsType] = [];
+    }
+    const { type: type, ...rest } = item;
+    acc[itemsType].push(rest);
+    return acc;
+  }, {});
+
+  return Object.keys(groupedByType).map(category => ({
+    category,
+    items: groupedByType[category].map((item: any) => (item))
+  }));
+
+  // Transform the grouped items into the desired structure
+  /* return Object.keys(groupedByType).map(category => ({
+    category,
+    items: groupedByType[category].map((item) => (item))
+  })); */
+};
 
 export const getAllItems = async (_req: Request, res: Response, next: NextFunction) => {
   const items = await getItems();
   if (!items) {
     return next(new Error('No items found'));
   }
-  res.status(200).json(items);
+  const transformedItems = transformItems(items);
+  res.status(200).json(transformedItems);
 };
 
 export const addItem = async (req: Request, res: Response, next: NextFunction) => {
