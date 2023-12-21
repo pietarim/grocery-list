@@ -16,7 +16,6 @@ export const getUsersOwnRecipes = async (req: any, res: any) => {
   const userId = req.user.id;
   const page = parseInt(req.query.page);
   const recipes = await getUsersRecipes(userId, page);
-  console.log(1111111);
   const recipeCount = await Recipe.count();
   if (recipeCount > page * 5) {
     console.log('getUsersOwnRecipes hasMore true');
