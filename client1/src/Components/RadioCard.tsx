@@ -1,6 +1,7 @@
 import { Box, useRadio } from '@chakra-ui/react';
 
 const RadioCard = (props) => {
+  console.log('props', props);
   const { getInputProps, getCheckboxProps } = useRadio(props);
 
   const input = getInputProps();

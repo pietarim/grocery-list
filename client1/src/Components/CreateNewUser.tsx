@@ -1,10 +1,11 @@
 import { Field, Form, Formik } from 'formik';
 import { FormControl, FormErrorMessage, FormLabel, Input, Button } from '@chakra-ui/react';
 import { register } from '../services/user';
+import { FormikProps } from '../types';
 
 const CreateNewUser = () => {
 
-  function validateUsername(value) {
+  function validateUsername(value: string) {
     let error;
     if (!value) {
       error = 'Username is required';
@@ -12,7 +13,7 @@ const CreateNewUser = () => {
     return error;
   }
 
-  function validatePassword(value) {
+  function validatePassword(value: string) {
     let error;
     if (!value) {
       error = 'Password is required';
@@ -20,7 +21,7 @@ const CreateNewUser = () => {
     return error;
   }
 
-  function validateEmail(value) {
+  function validateEmail(value: string) {
     let error;
     if (!value) {
       error = 'Email is required';
@@ -28,7 +29,13 @@ const CreateNewUser = () => {
     return error;
   }
 
-  const handleCreateNewUserSubmit = async (newUser) => {
+  interface NewUser {
+    username: string;
+    email: string;
+    password: string;
+  }
+
+  const handleCreateNewUserSubmit = async (newUser: NewUser) => {
     await register(newUser);
   };
 
@@ -42,7 +49,6 @@ const CreateNewUser = () => {
           password: values.password,
         };
         handleCreateNewUserSubmit(newUser);
-        console.log('submit handle is starting values', values);
         setTimeout(() => {
           alert(JSON.stringify(values, null, 2));
           actions.setSubmitting(false);
@@ -52,17 +58,17 @@ const CreateNewUser = () => {
       {(props) => (
         <Form>
           <Field name='username' validate={validateUsername}>
-            {({ field, form }) => (
-              <FormControl isInvalid={form.errors.username && form.touched.username}>
+            {({ field, form }: FormikProps) => (
+              <FormControl isInvalid={!!form.errors.username && form.touched.username}>
                 <FormLabel>First username</FormLabel>
                 <Input {...field} placeholder='username' />
                 <FormErrorMessage>{form.errors.username}</FormErrorMessage>
               </FormControl>
             )}
           </Field>
-          <Field name='email' validate={validatePassword}>
-            {({ field, form }) => (
-              <FormControl isInvalid={form.errors.email && form.touched.email}>
+          <Field name='email' validate={validateEmail}>
+            {({ field, form }: FormikProps) => (
+              <FormControl isInvalid={!!form.errors.email && form.touched.email}>
                 <FormLabel>Password</FormLabel>
                 <Input {...field} placeholder='email' />
                 <FormErrorMessage>{form.errors.email}</FormErrorMessage>
@@ -70,8 +76,8 @@ const CreateNewUser = () => {
             )}
           </Field>
           <Field name='password' validate={validatePassword}>
-            {({ field, form }) => (
-              <FormControl isInvalid={form.errors.password && form.touched.password}>
+            {({ field, form }: FormikProps) => (
+              <FormControl isInvalid={!!form.errors.password && form.touched.password}>
                 <FormLabel>Password</FormLabel>
                 <Input {...field} placeholder='password' type='password' />
                 <FormErrorMessage>{form.errors.password}</FormErrorMessage>

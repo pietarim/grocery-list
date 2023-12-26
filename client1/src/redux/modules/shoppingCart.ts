@@ -20,6 +20,10 @@ const initialState: ShoppingCartState = {
   items: [],
 };
 
+const setLocalStorage = (state: ShoppingCartState) => {
+  localStorage.setItem('shoppingCart', JSON.stringify(state));
+};
+
 const shoppingCartSlice = createSlice({
   name: 'shoppingCart',
   initialState,
@@ -33,6 +37,7 @@ const shoppingCartSlice = createSlice({
         const newItem = { ...action.payload, count: 1 };
         state.items.push(newItem);
       }
+      setLocalStorage(state);
     },
     removeProduct(state, action) {
       const index = state.items.findIndex(item => item.name === action.payload.name);
@@ -42,13 +47,10 @@ const shoppingCartSlice = createSlice({
       } else {
         state.items = state.items.filter(item => item.name !== action.payload.name);
       }
+      setLocalStorage(state);
     },
     addProductById(state, action) {
-      console.log('addProductById running');
-      console.log(state.items, ' state.items');
-      console.log(action.payload, ' action.payload');
       const index = state.items.findIndex(item => item.id === action.payload);
-      console.log(index, ' index');
 
       if (index !== -1) {
         state.items[index].count += 1;
@@ -56,19 +58,17 @@ const shoppingCartSlice = createSlice({
         const newItem = { ...action.payload, count: 1 };
         state.items.push(newItem);
       }
+      setLocalStorage(state);
     },
     removeProductById(state, action) {
       const index = state.items.findIndex(item => item.id === action.payload);
-      console.log('removeProductById running');
-      console.log(state.items, ' state.items');
-      console.log(action.payload, ' action.payload');
-      console.log(index, ' index');
 
       if (index !== -1 && state.items[index].count > 1) {
         state.items[index].count -= 1;
       } else {
         state.items = state.items.filter(item => item.id !== action.payload);
       }
+      setLocalStorage(state);
     },
   },
 });

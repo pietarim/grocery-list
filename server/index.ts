@@ -42,14 +42,9 @@ const main = async () => {
   }
 };
 
-/* 'http://127.0.0.1:5173/' */
 main();
 
-/* app.use(cors({
-  origin: 'http://localhost:5173/',
-  credentials: true,
-})); */
-const allowedOrigins = ['http://127.0.0.1:5173', 'http://localhost:3001', 'http://localhost:5173']; // Add more origins as needed
+const allowedOrigins = ['http://127.0.0.1:5173', 'http://localhost:3001', 'http://localhost:5173'];
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -64,7 +59,6 @@ app.use(cors({
 app.use(express.json());
 app.use(loggerMiddleware);
 app.get('/ping', (_req, res) => {
-  console.log('someone pinged here');
   res.send('pong');
 });
 

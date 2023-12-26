@@ -1,11 +1,12 @@
 import { useSelector } from "react-redux";
 import {
   Heading, List, ListItem, Flex, Card, TableContainer, Table, Thead, Tr, Th, Td, Tbody, Text,
-  Button, Drawer, DrawerBody, DrawerHeader, DrawerOverlay, DrawerContent, useDisclosure, DrawerCloseButton
+  Button, Drawer, DrawerBody, DrawerHeader, DrawerOverlay, DrawerContent, useDisclosure, DrawerCloseButton,
+  Divider
 } from "@chakra-ui/react";
 import _ from "lodash";
 import { addProductById, removeProductById } from "../redux/modules/shoppingCart";
-import { useDispatch } from "react-redux";
+import { useDispatch, useEffect } from "react-redux";
 
 interface RecipeToItem {
   amount: string;
@@ -61,7 +62,13 @@ type ItemByType = Array<RecipeItemCalc | string>;
 const ShoppingList = ({ isMobile }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
-  const shoppingList = useSelector((state: AppState) => state.shoppingCart);
+  let shoppingList = useSelector((state: AppState) => state.shoppingCart);
+  console.log('shoppingList', shoppingList);
+  if (!shoppingList.items.length) {
+    console.log('localstorage case: ');
+    console.log(localStorage.getItem('shoppingCart'));
+    shoppingList = localStorage.getItem('shoppingCart') ? JSON.parse(localStorage.getItem('shoppingCart') || '{}') : { items: [] };
+  }
 
   const itemsList: RecipesItem[] = shoppingList.items.reduce((acc: RecipesItem[], cur: Recipe) => {
     return [...acc, ...cur.item.map((item) => {
@@ -152,10 +159,12 @@ const ShoppingList = ({ isMobile }: any) => {
   if (!isMobile) {
     return (
       <div>
-        <Heading as="h2" size="2xl" color='customeExit.custom'>
+        <Heading mb='2' as="h2" size="2xl" color='customeExit.custom'>
           Shopping list
         </Heading>
+        <Divider mb='2' style={{ marginTop: '10px', color: 'black' }} />
         <Flex justifyContent="space-between">
+          <div></div>
           <TableContainer>
             <Table>
               {returnItemsAndTitles()}</Table>
@@ -185,11 +194,11 @@ const ShoppingList = ({ isMobile }: any) => {
   } else {
     return (
       <div>
-        <Button onClick={onOpen}>Open Drawer</Button>
+        <Button onClick={onOpen}>show recipes</Button>
         <Drawer placement='right' onClose={onClose} isOpen={isOpen}>
           <DrawerOverlay />
           <DrawerContent>
-            <DrawerHeader borderBottomWidth='1px'>Basic Drawer<DrawerCloseButton /></DrawerHeader>
+            <DrawerHeader borderBottomWidth='1px'>Selected recipes<DrawerCloseButton /></DrawerHeader>
             <DrawerBody>
               <List>
                 {shoppingList.items.map((item) => (

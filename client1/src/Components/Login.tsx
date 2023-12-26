@@ -15,9 +15,23 @@ interface setUserProp {
   setUser: (user: UserState) => void;
 }
  */
+
+interface FieldProps {
+  field: {
+    name: string;
+    value: string;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
+  };
+  form: {
+    touched: { [field: string]: boolean; };
+    errors: { [field: string]: string; };
+  };
+}
+
 function LoginForm(/* { setUser }: SetUserProp */) {
   const { setToken } = useAuth();
-  function validateName(value) {
+  function validateName(value: string) {
     let error;
     if (!value) {
       error = 'Name is required';
@@ -25,7 +39,7 @@ function LoginForm(/* { setUser }: SetUserProp */) {
     return error;
   }
 
-  function validatePassword(value) {
+  function validatePassword(value: string) {
     let error;
     if (!value) {
       error = 'Password is required';
@@ -33,7 +47,12 @@ function LoginForm(/* { setUser }: SetUserProp */) {
     return error;
   }
 
-  const handleLoginSubmit = async (loginData) => {
+  interface LoginData {
+    name: string;
+    password: string;
+  }
+
+  const handleLoginSubmit = async (loginData: LoginData) => {
     const newLogin = {
       username: loginData.name,
       password: loginData.password,
@@ -54,17 +73,13 @@ function LoginForm(/* { setUser }: SetUserProp */) {
         };
         handleLoginSubmit(loginData);
         actions.setSubmitting(false);
-        /* setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          actions.setSubmitting(false);
-        }, 1000); */
       }}
     >
       {(props) => (
         <Form>
           <Field name='name' validate={validateName}>
-            {({ field, form }) => (
-              <FormControl isInvalid={form.errors.name && form.touched.name}>
+            {({ field, form }: FieldProps) => (
+              <FormControl isInvalid={!!form.errors.name && form.touched.name}>
                 <FormLabel>First name</FormLabel>
                 <Input {...field} placeholder='name' />
                 <FormErrorMessage>{form.errors.name}</FormErrorMessage>
@@ -72,8 +87,8 @@ function LoginForm(/* { setUser }: SetUserProp */) {
             )}
           </Field>
           <Field name='password' validate={validatePassword}>
-            {({ field, form }) => (
-              <FormControl isInvalid={form.errors.password && form.touched.password}>
+            {({ field, form }: FieldProps) => (
+              <FormControl isInvalid={!!form.errors.password && form.touched.password}>
                 <FormLabel>Password</FormLabel>
                 <Input {...field} placeholder='password' type='password' />
                 <FormErrorMessage>{form.errors.password}</FormErrorMessage>

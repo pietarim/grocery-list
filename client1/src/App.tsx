@@ -11,7 +11,7 @@ import Login from "./Components/Login";
 import CreateNewUser from './Components/CreateNewUser';
 import { useAxios } from './hooks/useAxios';
 import { useAuth } from './hooks/useAuth';
-import Friend from './Components/Friend';
+import CreateRecipe from './Components/CreateRecipe';
 
 function App() {
   const { setToken, token } = useAuth();
@@ -41,6 +41,7 @@ function App() {
       }
     };
     getAuthUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLogout = () => {
@@ -61,7 +62,7 @@ function App() {
           case "view":
             return <ListRecipes isMobile={true} />;
           case "create":
-            return <Friend />;
+            return <CreateRecipe />;
           case "shopping-cart":
             return <ShoppingList isMobile={true} />;
           default:
@@ -69,14 +70,21 @@ function App() {
         }
       };
       return (
-        <>
+        <div style={{ position: 'relative', height: '100vh' }}>
           <Menu>
+            {/* <div style={{ height: '30px' }}> */}
             <MenuButton
               as={IconButton}
               aria-label='Options'
               icon={<HamburgerIcon />}
               variant='outline'
+              style={{
+                position: 'absolute', // Absolute positioning
+                top: 0,               // Top of the container
+                right: 0,             // Right of the container
+              }}
             />
+            {/* </div> */}
             <MenuList>
               <MenuItem onClick={() => setMobileRoute("view")}>Discover recipes</MenuItem>
               <MenuItem onClick={() => setMobileRoute("create")}>Create recipe</MenuItem>
@@ -85,7 +93,7 @@ function App() {
             </MenuList>
           </Menu>
           {returnMobileRoute()}
-        </>
+        </div>
       );
     } else if (!isMobileView) {
       return (
@@ -98,8 +106,10 @@ function App() {
                 <Tab>Shopping list</Tab>
               </div>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Badge fontSize='0.8em' colorScheme='blue' mr='2' variant='solid' >User: {token.username} logged in</Badge>
-                <Button colorScheme='customeExit' onClick={() => handleLogout()}>Log out</Button>
+                <Badge fontSize='0.8em' colorScheme='lapis' mr='2' variant='solid' >
+                  User: {token.username} logged in
+                </Badge>
+                <Button colorScheme='customCoyote' onClick={() => handleLogout()}>Log out</Button>
               </div>
             </TabList>
 
@@ -108,7 +118,7 @@ function App() {
                 <ListRecipes isMobile={false} />
               </TabPanel>
               <TabPanel>
-                <Friend />
+                <CreateRecipe />
               </TabPanel>
               <TabPanel>
                 <ShoppingList />

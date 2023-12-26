@@ -2,13 +2,20 @@ import {
   useRadioGroup, Wrap, Box, useRadio, Card, CardBody, Flex,
   FormControl, FormLabel, FormErrorMessage, Input, Textarea, Button,
   NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper,
-  NumberDecrementStepper, Text, List, ListItem, Image, useTheme
+  NumberDecrementStepper, Text, List, ListItem, Image, useTheme, Heading,
+  Divider
 } from "@chakra-ui/react";
 import { Field, Form, Formik } from 'formik';
 import { useAxios } from "../hooks/useAxios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import {
+  DbItem, WorkMemorySelection, SelectedItem, NewSelectedItem, OptionsForMenu,
+  FormRecipe, WorkMemryItem, FormikProps, FormikPropsWithTextarea
+} from "../types";
 
-function RadioCard(props) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function RadioCard(props: any) {
+  console.log('RadioCard props', props);
   const { getInputProps, getRadioProps } = useRadio(props);
 
   const input = getInputProps();
@@ -39,22 +46,22 @@ function RadioCard(props) {
   );
 }
 
-const Friend = () => {
-  const [options3, setOptions3] = useState<any[]>([]);
+const CreateRecipe = () => {
+  const [options3, setOptions3] = useState<OptionsForMenu[]>([]);
   const { get, post, deleteReq } = useAxios();
-  const [visibleData, setVisibleData] = useState<any[]>([]);
+  const [visibleData, setVisibleData] = useState<WorkMemorySelection[]>([]);
   const [hiddenCategoryList, setHiddenCategoryList] = useState<string[]>([]);
-  const [itemArray, setItemArray] = useState<any[]>([]);
+  const [itemArray, setItemArray] = useState<SelectedItem[]>([]);
   const [itemAmount, setItemAmount] = useState<string>("");
-  const [selected, setSelected] = useState<any>(null);
-  const [previewImage, setPreviewImage] = useState<any>(null);
-  const [imageToUpload, setImageToUpload] = useState<any>(null);
+  const [selected, setSelected] = useState<NewSelectedItem | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [imageToUpload, setImageToUpload] = useState<File | null>(null);
 
   const theme = useTheme();
   const bgColor = theme.colors.blue[300];
   const customYellow = theme.colors.yellow[300];
 
-  const handleVisibleData = (hiddenCategoryList: string[], workMemoryList: any[]) => {
+  const handleVisibleData = (hiddenCategoryList: string[], workMemoryList: WorkMemorySelection[]) => {
     const newVisibleData = workMemoryList.map((item) => {
       if (!hiddenCategoryList.includes(item.category)) {
         return item;
@@ -69,8 +76,9 @@ const Friend = () => {
     const getItems = async () => {
       const itemsQuery = await get('/items');
       const arr = itemsQuery.data;
-      const initialHiddenCategoryList = arr.map((item) => item.category);
+      const initialHiddenCategoryList = arr.map((item: DbItem) => item.category);
       setHiddenCategoryList(initialHiddenCategoryList);
+      console.log(arr);
       setOptions3(arr);
       setVisibleData(arr);
       handleVisibleData(initialHiddenCategoryList, arr);
@@ -81,6 +89,9 @@ const Friend = () => {
   const setSelectedItem = (id: string) => {
     const allItems = options3.map((item) => item.items).flat();
     const item = allItems.find((item) => item.id.toString() === id);
+    if (!item) {
+      return;
+    }
     setSelected(item);
   };
 
@@ -91,7 +102,7 @@ const Friend = () => {
   });
 
   const addItemsToArr = (isFirst: boolean) => {
-    console.log(itemAmount);
+    console.log(selected);
     if (!selected || itemAmount === '0.00') {
       return;
     } else if (isFirst) {
@@ -129,7 +140,14 @@ const Friend = () => {
             display: 'inline-block',
             padding: '4px'
           }}>{selected ? selected.name : 'pick item'}</Text>
-          <Button colorScheme='customeExit' variant='outline' isDisabled={(!selected || itemAmount === '0.00') ? true : false} onClick={() => addItemsToArr(true)}>Add item</Button>
+          <Button
+            colorScheme='customeExit'
+            variant='outline'
+            isDisabled={(!selected || itemAmount === '0.00') ? true : false}
+            onClick={() => addItemsToArr(true)}
+          >
+            Add item
+          </Button>
         </>
       );
     } else {
@@ -150,21 +168,22 @@ const Friend = () => {
             display: 'inline-block',
             padding: '4px'
           }}>{selected ? selected.name : "pick item"}</Text>
-          <Button colorScheme='customeExit' variant='outline' isDisabled={(!selected || itemAmount === '0.00') ? true : false} onClick={() => addItemsToArr(false)}>Add item</Button>
+          <Button
+            colorScheme='customeExit'
+            variant='outline'
+            isDisabled={(!selected || itemAmount === '0.00') ? true : false}
+            onClick={() => addItemsToArr(false)}
+          >
+            Add item
+          </Button>
         </>
       );
     }
   };
 
-  interface Item {
-    id: number;
-    name: string;
-    unitSize: number;
-  }
-
   const group = getRootProps();
 
-  function validateName(value) {
+  function validateName(value: string) {
     let error;
     if (!value) {
       error = 'Name is required';
@@ -172,7 +191,7 @@ const Friend = () => {
     return error;
   }
 
-  function validatePassword(value) {
+  function validatePassword(value: string) {
     let error;
     if (!value) {
       error = 'Password is required';
@@ -195,7 +214,7 @@ const Friend = () => {
     }
   };
 
-  const handleRecipeSubmit = (recipe: any) => {
+  const handleRecipeSubmit = (recipe: FormRecipe) => {
     console.log('handleRecipeSubmit');
     if (imageToUpload) {
       const formData = new FormData();
@@ -225,13 +244,16 @@ const Friend = () => {
 
   return (
     <>
-      <Flex>
+      <Heading color='customInfo.custom' as='h2' size='2xl' textAlign="center" flex="1">
+        Create new recipe
+      </Heading>
+      <Divider mb='2' style={{ marginTop: '10px', color: 'black' }} />
+      <Flex /* style={{ backgroundColor: '#3A454F' }} */ justify={'center'}>
         <Card mb='2' variant='filled'>
           <CardBody>
             <Formik
               initialValues={{ name: '', description: '', public: false }}
               onSubmit={(values, actions) => {
-                console.log('submitting on käynnissä');
                 const recipe = {
                   name: values.name,
                   description: values.description,
@@ -246,8 +268,8 @@ const Friend = () => {
               {(props) => (
                 <Form>
                   <Field name='name' validate={validateName}>
-                    {({ field, form }) => (
-                      <FormControl isInvalid={form.errors.name && form.touched.name}>
+                    {({ field, form }: FormikProps) => (
+                      <FormControl isInvalid={!!form.errors.name && form.touched.name}>
                         <FormLabel>Recipe name</FormLabel>
                         <Input style={{ backgroundColor: "white" }} {...field} placeholder='name' />
                         <FormErrorMessage>{form.errors.name}</FormErrorMessage>
@@ -255,8 +277,8 @@ const Friend = () => {
                     )}
                   </Field>
                   <Field name='description' validate={validatePassword}>
-                    {({ field, form }) => (
-                      <FormControl isInvalid={form.errors.description && form.touched.description}>
+                    {({ field, form }: FormikPropsWithTextarea) => (
+                      <FormControl isInvalid={!!form.errors.description && form.touched.description}>
                         <FormLabel>Recipe description</FormLabel>
                         <Textarea
                           {...field}
@@ -312,12 +334,15 @@ const Friend = () => {
                 borderRadius='md'
                 boxShadow='md'
                 onClick={() => hadleToggleHideList(value.category)}
-                style={{ backgroundColor: hiddenCategoryList.includes(value.category) ? "#466C8F" : "#3283CF" }} px={[2, 3]} // less padding on smaller screens
+                style={{
+                  backgroundColor: hiddenCategoryList.includes(value.category) ? "#466C8F" : "#3283CF"
+                }}
+                px={[2, 3]}
                 py={[2, 3]}
               >
                 {value.category}
               </Box>
-              {value.items.map((item: Item) => {
+              {value.items.map((item: WorkMemryItem) => {
                 const radio = getRadioProps({ value: item.id.toString() });
                 return (
                   <RadioCard key={item.id.toString()} {...radio}>
@@ -334,4 +359,4 @@ const Friend = () => {
   );
 };
 
-export default Friend;
+export default CreateRecipe;

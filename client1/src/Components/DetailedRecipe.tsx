@@ -4,12 +4,28 @@ import { useDispatch } from 'react-redux';
 import { useAxios } from '../hooks/useAxios';
 import { useAuth } from '../hooks/useAuth';
 import { addProduct } from '../redux/modules/shoppingCart';
+import { DbRecipe } from '../types';
 
-const DetailedRecipe = ({ detailedRecipe, setDetailedRecipe, isMobile, recipe, setRecipe }: any) => {
+interface DetailedRecipeProps {
+  detailedRecipe: DbRecipe | null;
+  setDetailedRecipe: (recipe: DbRecipe | null) => void | null;
+  isMobile: boolean;
+  recipe: DbRecipe[];
+  setRecipe: (recipe: DbRecipe[]) => void;
+  setFadeIn: (fadeIn: boolean) => void;
+}
 
+
+const DetailedRecipe = ({ detailedRecipe, setDetailedRecipe, isMobile, recipe, setRecipe }: DetailedRecipeProps) => {
+
+  console.log('detailedRecipe', detailedRecipe);
   const { put, deleteReq } = useAxios();
   const { token } = useAuth();
   const dispatch = useDispatch();
+
+  if (!detailedRecipe) {
+    return null;
+  }
 
   let isRecipeOwner = false;
 
@@ -39,17 +55,13 @@ const DetailedRecipe = ({ detailedRecipe, setDetailedRecipe, isMobile, recipe, s
   const handleAddToCart = () => {
     dispatch(addProduct(detailedRecipe));
   };
-
-  if (!detailedRecipe) {
-    return null;
-  }
   if (!isMobile) {
     return (
       <Card
         className="recipe-container"
         direction={{ base: 'column', sm: 'row' }}
         overflow='hidden'
-        variant='outline'
+        variant='elevated'
         style={{ marginTop: '1rem', marginBottom: '1rem' }}
       >
         <Flex className="recipe-content" direction="column" justify="space-between" flex="1">
@@ -75,7 +87,10 @@ const DetailedRecipe = ({ detailedRecipe, setDetailedRecipe, isMobile, recipe, s
                 </Card>
               </Flex>
               <div>
-                <Heading size='xl' color='customInfo.custom' textAlign="center" flex="1">{detailedRecipe.name}</Heading>
+                <Heading mb='3' size='xl' color='customCoyote.custom' textAlign="center" flex="1">
+                  {detailedRecipe.name}
+                </Heading>
+                <Divider />
                 <Text fontSize='lg' style={{ margin: '12px' }}>
                   {detailedRecipe.description}
                 </Text>
@@ -86,7 +101,7 @@ const DetailedRecipe = ({ detailedRecipe, setDetailedRecipe, isMobile, recipe, s
             <Button variant='outline' colorScheme='blue' onClick={() => handleAddToCart()}>
               Add to cart
             </Button>
-            <Button colorScheme='customGreen' variant='ghost' onClick={() => { handleLike(); }} /* leftIcon={<BiLike />} */>
+            <Button colorScheme='customGreen' variant='ghost' onClick={() => { handleLike(); }}>
               Like
             </Button>
             {isRecipeOwner ? <Button leftIcon={<DeleteIcon />} onClick={() => handleRemove()}>

@@ -1,12 +1,27 @@
-import { Card, CardBody, CardFooter, Image, Heading, Text, Button, Flex, Divider, Badge, Stack } from '@chakra-ui/react';
+import {
+  Card, CardBody, CardFooter, Image, Heading, Text, Button, Flex, Divider, Badge, Stack,
+} from '@chakra-ui/react';
 import { addProduct } from '../redux/modules/shoppingCart';
 import { useDispatch } from 'react-redux';
+import { useNotification } from '../hooks/useNotofication';
+import { Item, DbRecipe } from '../types';
 
-const Recipe = ({ recipe, setDetailedRecipe }: any) => {
+interface RecipeProps {
+  recipe: DbRecipe;
+  setDetailedRecipe: (recipe: DbRecipe | null) => void;
+}
+
+const Recipe = ({ recipe, setDetailedRecipe }: RecipeProps) => {
   const dispatch = useDispatch();
+  const { showNotification } = useNotification();
 
   const handleAddToCart = () => {
-    dispatch(addProduct(recipe));
+    try {
+      dispatch(addProduct(recipe));
+      showNotification('Recipe added to cart', 'success');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -18,7 +33,9 @@ const Recipe = ({ recipe, setDetailedRecipe }: any) => {
     >
       <Flex direction="column" justify="space-between" flex="1">
         <CardBody>
-          <Heading style={{ marginBottom: '6px' }} size='md'>{recipe.name}</Heading>
+          <Heading style={{ color: '#3A454F', marginBottom: '6px' }} size='md'>
+            {recipe.name}
+          </Heading>
           <Divider />
           <Flex style={{ marginTop: '5px' }} direction="row" justify="space-between" flex="1">
             <Image
@@ -32,7 +49,7 @@ const Recipe = ({ recipe, setDetailedRecipe }: any) => {
             </Text>
             <Card style={{ backgroundColor: '#e6f9ff' }} variant='elevated' minW='175px'>
               <Text as='b' style={{ borderBottom: '1px solid #002633' }}>Incredients:</Text>
-              {recipe.item.map((i, index) => (
+              {recipe.item.map((i: Item, index: number) => (
                 <Text key={index} noOfLines={3}>
                   {i.name}
                 </Text>
