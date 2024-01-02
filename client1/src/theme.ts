@@ -2,67 +2,7 @@ import { extendTheme } from '@chakra-ui/react';
 
 export const theme = extendTheme({
   colors: {
-    customGreen: {
-      50: '#E0E7EE',
-      100: '#B8C4D6',
-      200: '#90A1BE',
-      300: '#6880A6',
-      400: '#506C96',
-      500: '#466C8F',
-      600: '#3D6281',
-      700: '#345873',
-      800: '#2B4E65',
-      900: '#223442',
-      custom: '#466C8F'
-    },
-    customeExit: {
-      50: '#758899',
-      100: '#687B8C',
-      200: '#5C6D7D',
-      300: '#51606E',
-      400: '#46535E',
-      500: '#3A454F',
-      600: '#33404a',
-      700: '#323B44',
-      800: '#2E363E',
-      900: '#2A3139',
-      custom: '#3A454F'
-    },
-    customInfo: {
-      50: '#e9f5f2',
-      100: '#42B02A',
-      /* 500: '#46607A', */
-      500: '#3A454F',
-      900: '#1a4731',
-      custom: '#4F4A3A',
-    },
-    customYellow: {
-      50: '#e9f5f2',
-      100: '#d4a758',
-      200: '#d9ba7f',
-      300: '#dfcea5',
-      400: '#e4e1cc',
-      500: '#CF9332',
-      600: '#ab8432',
-      700: '#877532',
-      800: '#626531',
-      900: '#1a4731',
-      custom: '#CF9332'
-    },
-    customCoyote: {
-      50: '#B5A07E',
-      100: '#AD9570',
-      200: '#987F57',
-      300: '#987F57',
-      400: '#89734F',
-      500: '#7A6646',
-      600: '#726042',
-      700: '#69583D',
-      800: '#615138',
-      900: '#584A33',
-      custom: '#7A6646'
-    },
-    lapis: {
+    customGreen: { // #2 on the complementary line grayish blue
       50: '#80A1C0',
       100: '#7197B9',
       200: '#638CB2',
@@ -75,12 +15,52 @@ export const theme = extendTheme({
       900: '#324D67',
       custom: '#466C8F',
     },
-    itemColor: {
+    customeExit: { // #5 on the complementary line dark grayish blue
+      50: '#758899',
+      100: '#687B8C',
+      200: '#5C6D7D',
+      300: '#51606E',
+      400: '#46535E',
+      500: '#3A454F',
+      600: '#33404a',
+      700: '#323B44',
+      800: '#2E363E',
+      900: '#2A3139',
+      custom: '#3A454F'
+    },
+    customYellow: { // #1 on the complementary line yellow harvest gold
       50: '#e9f5f2',
-      100: '#42B02A',
+      100: '#d4a758',
+      200: '#d9ba7f',
+      300: '#dfcea5',
+      400: '#e4e1cc',
       500: '#CF9332',
+      600: '#ab8432',
+      700: '#877532',
+      800: '#626531',
       900: '#1a4731',
-      custom: '#CF9332',
-    }
-  },
+      custom: '#CF9332'
+    },
+    customCoyote: { // #4 on the complementary line
+      50: '#B5A07E',
+      100: '#AD9570',
+      200: '#987F57',
+      300: '#987F57',
+      400: '#89734F',
+      500: '#7A6646',
+      600: '#726042',
+      700: '#69583D',
+      800: '#615138',
+      900: '#584A33',
+      custom: '#7A6646'
+    },
+    successGreen: {
+      500: '#54CF32',
+      custom: '#54CF32'
+    },
+    errorRed: {
+      500: '#CF3A32',
+      custom: '#CF3232'
+    },
+  }
 });

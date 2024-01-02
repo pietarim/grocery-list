@@ -1,20 +1,7 @@
 import { Field, Form, Formik } from 'formik';
 import { FormControl, FormErrorMessage, FormLabel, Input, Button } from '@chakra-ui/react';
-/* import { SetUserProp } from '../types'; */
 import { login } from '../services/user';
 import { useAuth } from '../hooks/useAuth';
-
-/* interface User {
-  username: string;
-  token: string;
-}
-
-type UserState = User | null;
-
-interface setUserProp {
-  setUser: (user: UserState) => void;
-}
- */
 
 interface FieldProps {
   field: {
@@ -57,9 +44,7 @@ function LoginForm(/* { setUser }: SetUserProp */) {
       username: loginData.name,
       password: loginData.password,
     };
-    console.log('newLogin', newLogin);
     const savedLogin = await login(newLogin);
-    /* setUser(savedLogin); */
     setToken({ token: savedLogin.token, username: savedLogin.username, id: savedLogin.id });
   };
 

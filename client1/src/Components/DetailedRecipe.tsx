@@ -15,10 +15,8 @@ interface DetailedRecipeProps {
   setFadeIn: (fadeIn: boolean) => void;
 }
 
-
 const DetailedRecipe = ({ detailedRecipe, setDetailedRecipe, isMobile, recipe, setRecipe }: DetailedRecipeProps) => {
 
-  console.log('detailedRecipe', detailedRecipe);
   const { put, deleteReq } = useAxios();
   const { token } = useAuth();
   const dispatch = useDispatch();

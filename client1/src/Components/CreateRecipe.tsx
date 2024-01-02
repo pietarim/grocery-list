@@ -244,7 +244,7 @@ const CreateRecipe = () => {
 
   return (
     <>
-      <Heading color='customInfo.custom' as='h2' size='2xl' textAlign="center" flex="1">
+      <Heading color='customeExit.custom' as='h2' size='2xl' textAlign="center" flex="1">
         Create new recipe
       </Heading>
       <Divider mb='2' style={{ marginTop: '10px', color: 'black' }} />
@@ -313,7 +313,7 @@ const CreateRecipe = () => {
                   <br />
                   <Button
                     mt={4}
-                    colorScheme='itemColor'
+                    colorScheme='customYellow'
                     isLoading={props.isSubmitting}
                     type='submit'
                   >

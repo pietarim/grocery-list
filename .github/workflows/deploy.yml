@@ -1,0 +1,39 @@
+name: Deploy to AWS Elastic Beanstalk
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+  - uses: actions/checkout@v2
+
+  - name: Set up node
+    uses: actions/setup-node@v2
+    with:
+      node-version: '18'
+
+  - run: npm install
+
+  - name: Build server
+    run: npm run build-ts-server
+
+  - name: Build client
+    run: npm run build
+
+  - name: Copy client build to server
+    run: cp -R client/ server/public
+
+  - name: Install AWS Elastic Beanstalk CLI
+        run: pip install awsebcli
+
+  - name: Deploy to AWS Elastic Beanstalk
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: 'eu-north-1b'
+    run: |
+      eb init -p Node.js your-app-name --region $AWS_REGION
+      eb deploy Grocery-app-env -l "deploy-${{ github.run_number }}"

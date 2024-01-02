@@ -6,7 +6,7 @@ import {
 } from "@chakra-ui/react";
 import _ from "lodash";
 import { addProductById, removeProductById } from "../redux/modules/shoppingCart";
-import { useDispatch, useEffect } from "react-redux";
+import { useDispatch } from "react-redux";
 
 interface RecipeToItem {
   amount: string;
@@ -59,14 +59,15 @@ interface RecipeItemCalc {
 type ItemAndTitle = RecipeItemCalc | string;
 type ItemByType = Array<RecipeItemCalc | string>;
 
-const ShoppingList = ({ isMobile }: any) => {
+interface ShoppingListProps {
+  isMobile: boolean;
+}
+
+const ShoppingList = ({ isMobile }: ShoppingListProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   let shoppingList = useSelector((state: AppState) => state.shoppingCart);
-  console.log('shoppingList', shoppingList);
   if (!shoppingList.items.length) {
-    console.log('localstorage case: ');
-    console.log(localStorage.getItem('shoppingCart'));
     shoppingList = localStorage.getItem('shoppingCart') ? JSON.parse(localStorage.getItem('shoppingCart') || '{}') : { items: [] };
   }
 
@@ -222,16 +223,6 @@ const ShoppingList = ({ isMobile }: any) => {
             </Table>
           </TableContainer>
         </Flex>
-        {/* <Card style={{ backgroundColor: '#e6f9ff' }} variant='elevated' minW='175px'>
-          <List>
-            {shoppingList.items.map((item) => (
-              <ListItem key={item.id}>
-                <Text>{item.name}: {item.count}</Text>
-                <Button mr='1' colorScheme="customGreen" onClick={() => dispatch(addProductById(item.id))}>+</Button>
-                <Button colorScheme="customYellow" onClick={() => dispatch(removeProductById(item.id))}>-</Button>
-              </ListItem>
-            ))}
-          </List></Card> */}
       </div>
     );
   }

@@ -131,7 +131,7 @@ const ListRecipes = ({ isMobile }: ListRecipesProps) => {
     if (isMobile) {
       return (
         <>
-          <Heading color='customInfo.custom' as='h2' size='2xl' textAlign="center" flex="1">
+          <Heading color='customeExit.custom' as='h2' size='2xl' textAlign="center" flex="1">
             Recipes
           </Heading>
           <Select width="auto" value={recipeOrder} onChange={handleRecipeOrder}>
@@ -148,7 +148,7 @@ const ListRecipes = ({ isMobile }: ListRecipesProps) => {
             <option value='mostLiked'>Most Liked</option>
             <option value='owned'>My recipes</option>
           </Select>
-          <Heading color='customInfo.custom' as='h2' size='2xl' textAlign="center" flex="1">
+          <Heading color='customeExit.custom' as='h2' size='2xl' textAlign="center" flex="1">
             Recipes
           </Heading>
         </Flex>

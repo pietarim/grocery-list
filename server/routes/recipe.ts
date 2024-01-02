@@ -1,7 +1,6 @@
 import express from 'express';
 import { returnMostLikedRecipes, getIntroduceRecipes, createRecipe, updateRecipe, deleteRecipe, getUsersOwnRecipes, likeRecipeController } from '../controllers/recipes';
-import { parseString, parseNumber, parseIncredient, parseBoolean } from '../config/utils';
-import { get } from 'http';
+import { parseString, parseNumber, parseBoolean } from '../config/utils';
 import { userExtractor } from '../middleware/userExtractor';
 
 const router = express.Router();
@@ -15,7 +14,7 @@ router.put('/like/:id', userExtractor, likeRecipeController);
 
 router.post('/', userExtractor, createRecipe);
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res) => { // TODO: not used?
   const { id } = req.params;
   const { name, description, global, ingredients, ownerId } = req.body;
   const parsedOwnerId = parseNumber(ownerId);

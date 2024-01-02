@@ -72,19 +72,17 @@ function App() {
       return (
         <div style={{ position: 'relative', height: '100vh' }}>
           <Menu>
-            {/* <div style={{ height: '30px' }}> */}
             <MenuButton
               as={IconButton}
               aria-label='Options'
               icon={<HamburgerIcon />}
               variant='outline'
               style={{
-                position: 'absolute', // Absolute positioning
-                top: 0,               // Top of the container
-                right: 0,             // Right of the container
+                position: 'absolute',
+                top: 0,
+                right: 0,
               }}
             />
-            {/* </div> */}
             <MenuList>
               <MenuItem onClick={() => setMobileRoute("view")}>Discover recipes</MenuItem>
               <MenuItem onClick={() => setMobileRoute("create")}>Create recipe</MenuItem>
@@ -106,7 +104,7 @@ function App() {
                 <Tab>Shopping list</Tab>
               </div>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Badge fontSize='0.8em' colorScheme='lapis' mr='2' variant='solid' >
+                <Badge fontSize='0.8em' colorScheme='customGreen' mr='2' variant='solid' >
                   User: {token.username} logged in
                 </Badge>
                 <Button colorScheme='customCoyote' onClick={() => handleLogout()}>Log out</Button>
