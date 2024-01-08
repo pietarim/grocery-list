@@ -12,17 +12,9 @@ const { Model, DataTypes, Sequelize, QueryTypes } = require('sequelize');
 dotenv.config();
 const app = express();
 app.use(cookieParser());
-const port = 3001;
+const port = config.port;
 
-console.log(config.development.port);
-
-const sequelize = new Sequelize(config.development.databaseUrl, {
-  /* const main = async () => {
-    try {
-      await 
-    }
-  } */
-});
+const sequelize = new Sequelize(config.databaseUrl, {});
 
 const loggerMiddleware = (req: any, res: any, next: any) => {
   console.log(`Request Method: ${req.method}, Endpoint: ${req.path}`);
@@ -44,7 +36,9 @@ const main = async () => {
 
 main();
 
-const allowedOrigins = ['http://127.0.0.1:5173', 'http://localhost:3001', 'http://localhost:5173'];
+const url = config.url;
+
+const allowedOrigins = ['http://127.0.0.1:5173', 'http://localhost:3001', 'http://localhost:5173', url];
 
 app.use(cors({
   origin: (origin, callback) => {

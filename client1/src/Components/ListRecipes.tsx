@@ -91,7 +91,6 @@ const ListRecipes = ({ isMobile }: ListRecipesProps) => {
             if (error.response) {
               const status = error.response.status;
               if (status === 404 && currentPage === 1) {
-                console.log("404 error: No recipes found");
                 setRecipe([]);
                 setRecipeErrorMessage("You don't have any recipes yet");
               }
@@ -103,7 +102,6 @@ const ListRecipes = ({ isMobile }: ListRecipesProps) => {
         }
         break;
       default:
-        console.log('default');
         break;
     }
   };

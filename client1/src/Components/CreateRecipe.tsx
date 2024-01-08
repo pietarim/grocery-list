@@ -15,7 +15,6 @@ import {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function RadioCard(props: any) {
-  console.log('RadioCard props', props);
   const { getInputProps, getRadioProps } = useRadio(props);
 
   const input = getInputProps();
@@ -47,7 +46,7 @@ function RadioCard(props: any) {
 }
 
 const CreateRecipe = () => {
-  const [options3, setOptions3] = useState<OptionsForMenu[]>([]);
+  const [options3, setOptions] = useState<OptionsForMenu[]>([]);
   const { get, post, deleteReq } = useAxios();
   const [visibleData, setVisibleData] = useState<WorkMemorySelection[]>([]);
   const [hiddenCategoryList, setHiddenCategoryList] = useState<string[]>([]);
@@ -78,12 +77,12 @@ const CreateRecipe = () => {
       const arr = itemsQuery.data;
       const initialHiddenCategoryList = arr.map((item: DbItem) => item.category);
       setHiddenCategoryList(initialHiddenCategoryList);
-      console.log(arr);
-      setOptions3(arr);
+      setOptions(arr);
       setVisibleData(arr);
       handleVisibleData(initialHiddenCategoryList, arr);
     };
     getItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setSelectedItem = (id: string) => {
@@ -236,7 +235,6 @@ const CreateRecipe = () => {
             });
         })
         .catch((e) => {
-          console.log('epäonnistunut imageQuery');
           console.log(e);
         });
     }

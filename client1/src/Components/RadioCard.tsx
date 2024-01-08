@@ -2,7 +2,6 @@ import { Box, useRadio } from '@chakra-ui/react';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const RadioCard = (props: any) => {
-  console.log('props', props);
   const { getInputProps, getCheckboxProps } = useRadio(props);
 
   const input = getInputProps();

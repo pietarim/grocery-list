@@ -119,7 +119,7 @@ function App() {
                 <CreateRecipe />
               </TabPanel>
               <TabPanel>
-                <ShoppingList />
+                <ShoppingList isMobile={false} />
               </TabPanel>
             </TabPanels>
           </Tabs>

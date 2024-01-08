@@ -30,7 +30,9 @@ export const getUserByRefreshToken = async (token: string) => {
 };
 
 export const getUserByUsername = async (username: string) => {
+  console.log('getUserByUsername running', username);
   const user = await User.findOne({ where: { username: username } });
+  console.log('getUserByUsername running', user);
   return user;
 };
 

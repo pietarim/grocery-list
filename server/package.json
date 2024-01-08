@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node src/index.ts",
+    "start:dev": "ts-node ./index.ts",
+    "start": "node ./index.js",
+    "build": "tsc",
     "dev": "nodemon --exec ts-node ./index.ts",
     "local:db": "docker run -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 postgres",
     "db:dev-data": "ts-node seeders/devInitQueries.ts",

@@ -15,14 +15,15 @@ interface RecipeToItem {
 interface RecipeItem {
   id: number;
   name: string;
-  price: string;
-  image: string;
-  description: string;
-  category: string;
+  price?: string;
+  image?: string;
+  description?: string;
+  category?: string;
   isTitle?: string;
   recipeToItem: RecipeToItem;
   unitSize: string;
   type: string;
+  amount: number;
 }
 
 interface Recipe {
@@ -44,7 +45,7 @@ interface AppState {
 
 interface RecipesItem {
   name: string;
-  amount: string;
+  amount: number;
   unitSize: string;
   type: string;
 }
@@ -68,20 +69,27 @@ const ShoppingList = ({ isMobile }: ShoppingListProps) => {
   const dispatch = useDispatch();
   let shoppingList = useSelector((state: AppState) => state.shoppingCart);
   if (!shoppingList.items.length) {
-    shoppingList = localStorage.getItem('shoppingCart') ? JSON.parse(localStorage.getItem('shoppingCart') || '{}') : { items: [] };
+    shoppingList = localStorage.getItem('shoppingCart')
+      ? JSON.parse(localStorage.getItem('shoppingCart') || '{}') : { items: [] };
   }
 
   const itemsList: RecipesItem[] = shoppingList.items.reduce((acc: RecipesItem[], cur: Recipe) => {
+    console.log(cur);
     return [...acc, ...cur.item.map((item) => {
-      return { name: item.name, amount: parseFloat(item.recipeToItem.amount) * cur.count, unitSize: item.unitSize, type: item.type };
+      return {
+        name: item.name,
+        amount: parseFloat(item.recipeToItem.amount) * cur.count,
+        unitSize: item.unitSize,
+        type: item.type
+      };
     })];
   }, []);
 
-  const ItemsWithSumAmount = itemsList.reduce((acc: RecipeItemCalc[], cur: RecipesItem) => {
-    if (acc.some((item: RecipeItemCalc) => item.name === cur.name)) {
-      acc[acc.findIndex((item: RecipeItemCalc) => item.name === cur.name)].amount += parseFloat(cur.amount);
+  const ItemsWithSumAmount = itemsList.reduce((acc: RecipesItem[], cur: RecipesItem) => {
+    if (acc.some((item: RecipesItem) => item.name === cur.name)) {
+      acc[acc.findIndex((item: RecipesItem) => item.name === cur.name)].amount += cur.amount;
     } else {
-      acc.push({ ...cur, amount: parseFloat(cur.amount) });
+      acc.push(cur);
     }
     return acc;
   }, []);
@@ -109,9 +117,9 @@ const ShoppingList = ({ isMobile }: ShoppingListProps) => {
   const itemAmounts: { [key: string]: number; } = {};
   for (const item of itemsList) {
     if (itemAmounts[item.name]) {
-      itemAmounts[item.name] += parseFloat(item.amount);
+      itemAmounts[item.name] += item.amount;
     } else {
-      itemAmounts[item.name] = parseFloat(item.amount);
+      itemAmounts[item.name] = item.amount;
     }
   }
 
@@ -205,8 +213,12 @@ const ShoppingList = ({ isMobile }: ShoppingListProps) => {
                 {shoppingList.items.map((item) => (
                   <ListItem key={item.id}>
                     <Text>{item.name}: {item.count}</Text>
-                    <Button mr='1' colorScheme="customGreen" onClick={() => dispatch(addProductById(item.id))}>+</Button>
-                    <Button colorScheme="customYellow" onClick={() => dispatch(removeProductById(item.id))}>-</Button>
+                    <Button mr='1' colorScheme="customGreen" onClick={() => dispatch(addProductById(item.id))}>
+                      +
+                    </Button>
+                    <Button colorScheme="customYellow" onClick={() => dispatch(removeProductById(item.id))}>
+                      -
+                    </Button>
                   </ListItem>
                 ))}
               </List>
