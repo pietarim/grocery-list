@@ -47,7 +47,6 @@ export const getRecipesImageUri = async (recipeId: number) => {
 };
 
 export const getRandomRecipes = async (oldIds: number[]) => {
-  console.log(oldIds);
   const randomIds = await Recipe.findAll({
     attributes: ['id'],
     order: sequelize.random(),

@@ -6,7 +6,7 @@ import DetailedRecipe from './DetailedRecipe';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useAxios } from '../hooks/useAxios';
 import { DbRecipe } from '../types';
-import { NotificationProvider } from '../context/NotificationContext1';
+import { NotificationProvider } from '../context/NotificationContext';
 
 interface ListRecipesProps {
   isMobile: boolean;

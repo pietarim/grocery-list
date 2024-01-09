@@ -16,7 +16,7 @@ interface FieldProps {
   };
 }
 
-function LoginForm(/* { setUser }: SetUserProp */) {
+function LoginForm() {
   const { setToken } = useAuth();
   function validateName(value: string) {
     let error;

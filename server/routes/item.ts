@@ -1,6 +1,5 @@
 import express from 'express';
 import { addItem, getAllItems, updateItem } from '../controllers/item';
-import { parseString, parseNumber } from '../config/utils';
 
 const router = express.Router();
 

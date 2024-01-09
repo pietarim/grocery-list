@@ -74,7 +74,6 @@ const ShoppingList = ({ isMobile }: ShoppingListProps) => {
   }
 
   const itemsList: RecipesItem[] = shoppingList.items.reduce((acc: RecipesItem[], cur: Recipe) => {
-    console.log(cur);
     return [...acc, ...cur.item.map((item) => {
       return {
         name: item.name,

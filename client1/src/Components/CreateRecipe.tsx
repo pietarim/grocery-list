@@ -101,7 +101,6 @@ const CreateRecipe = () => {
   });
 
   const addItemsToArr = (isFirst: boolean) => {
-    console.log(selected);
     if (!selected || itemAmount === '0.00') {
       return;
     } else if (isFirst) {
@@ -128,7 +127,6 @@ const CreateRecipe = () => {
   };
 
   const returnItemArray = () => {
-    console.log(itemArray);
     if (!itemArray.length) {
       return (
         <>
@@ -214,7 +212,6 @@ const CreateRecipe = () => {
   };
 
   const handleRecipeSubmit = (recipe: FormRecipe) => {
-    console.log('handleRecipeSubmit');
     if (imageToUpload) {
       const formData = new FormData();
       formData.append('image', imageToUpload);
@@ -246,7 +243,7 @@ const CreateRecipe = () => {
         Create new recipe
       </Heading>
       <Divider mb='2' style={{ marginTop: '10px', color: 'black' }} />
-      <Flex /* style={{ backgroundColor: '#3A454F' }} */ justify={'center'}>
+      <Flex justify={'center'}>
         <Card mb='2' variant='filled'>
           <CardBody>
             <Formik
@@ -255,7 +252,7 @@ const CreateRecipe = () => {
                 const recipe = {
                   name: values.name,
                   description: values.description,
-                  /* public: values.public, */
+                  public: values.public,
                   global: false,
                   incredients: itemArray,
                 };

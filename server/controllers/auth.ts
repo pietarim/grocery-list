@@ -27,42 +27,33 @@ const createRefreshToken = () => {
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body;
-  console.log(username, password);
   const user = {
     username: parseString(username),
     password: parseString(password),
   };
-  console.log(11);
   const userFromDb = await getUserByUsername(user.username);
   if (!userFromDb) {
     throw new Error('invalid username or password');
   } else {
-    console.log(22);
     const passwordCorrect = await bcrypt.compare(user.password, userFromDb.passwordHash);
     if (!passwordCorrect) {
       throw new Error('invalid username or password');
     }
-    console.log(33);
     const userForToken = {
       username: userFromDb.username,
       id: userFromDb.id,
       email: userFromDb.email,
     };
-    console.log(44);
     const refreshToken = createRefreshToken();
-    console.log(55);
     addRefreshtoken(userFromDb.id, refreshToken);
 
-    console.log(66);
     const token = jwt.sign(userForToken, process.env.SECRET as string, { expiresIn: '2m' });
-    console.log(77);
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       secure: false,
       maxAge: 1000 * 60 * 60 * 24 * 7,
       sameSite: 'none'
     });
-    console.log(88);
     res.status(200).send({ token, username: userFromDb.username, id: userFromDb.id });
   }
 };

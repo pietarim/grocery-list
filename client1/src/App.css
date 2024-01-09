@@ -43,9 +43,6 @@
 
 .title {
   color: red;
-  /* font-size: 2em;
-  font-weight: 500; */
-  /* margin: 0.5em 0; */
 }
 
 .category {
@@ -71,8 +68,3 @@
 .chakra-tabs__tab[data-selected] {
   color: #646cff;
 }
-
-/* .two-column-list li:last-child .list-item-container,
-.two-column-list li:nth-last-child(2) .list-item-container {
-  border-right: none;
-} */
