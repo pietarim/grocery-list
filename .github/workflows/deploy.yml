@@ -22,7 +22,7 @@ jobs:
           npm run build
 
       - name: Build backend
-        run: | 
+        run: |
           cd ../server
           npm install
           npm run build
@@ -32,18 +32,18 @@ jobs:
         run: zip -r backend.zip .
 
       - name: Install AWS Elastic Beanstalk CLI
-            run: pip install awsebcli
+        run: pip install awsebcli
 
       - name: Deploy application to AWS Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v15
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: "Grocery-app"
-          environment_name: "Grocery-app-env"
-          version_label: "deploy-${{ github.run_number }}"
-          region: "eu-north-1b"
-          deployment_package: "backend.zip"
+          application_name: 'Grocery-app'
+          environment_name: 'Grocery-app-env'
+          version_label: 'deploy-${{ github.run_number }}'
+          region: 'eu-north-1b'
+          deployment_package: 'backend.zip'
 
       - name: Deploy to AWS Elastic Beanstalk
         env:
