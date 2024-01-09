@@ -21,11 +21,7 @@ jobs:
           cd client
           npm install
           npm run build
-
-      - name: Build backend
-        run: |
-          pwd
-          cd server
+          cd ../server
           npm install
           npm run build
           cp: -R ../client/dist .
