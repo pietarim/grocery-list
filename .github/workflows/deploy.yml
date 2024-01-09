@@ -24,7 +24,7 @@ jobs:
         run: |
           pwd
           dir
-          cd ../server
+          cd server
           npm install
           npm run build
           cp -R ../client/dist .
