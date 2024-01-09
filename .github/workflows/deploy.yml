@@ -17,12 +17,13 @@ jobs:
 
       - name: Build frontend
         run: |
-          pwd
           cd client
           npm install
           npm run build
       - name: Build backend
         run: |
+          pwd
+          dir
           cd ../server
           npm install
           npm run build
