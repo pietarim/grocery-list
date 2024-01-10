@@ -45,8 +45,8 @@ jobs:
           pwd
           dir
           unzip -l backend.zip
-      - name: Install AWS Elastic Beanstalk CLI
-        run: pip install awsebcli
+      #- name: Install AWS Elastic Beanstalk CLI
+      #  run: pip install awsebcli
 
       #      - name: Deploy to AWS Elastic Beanstalk
       #        env:
