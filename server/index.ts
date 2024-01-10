@@ -6,6 +6,7 @@ import { userRouter, recipeRouter, itemRouter, imageRouter, authRouter } from '.
 import cors from 'cors';
 import { errorHandler } from './middleware/errorHandler';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 
 const { Model, DataTypes, Sequelize, QueryTypes } = require('sequelize');
 
@@ -13,6 +14,8 @@ dotenv.config();
 const app = express();
 app.use(cookieParser());
 const port = config.port;
+
+const buildPath = path.join(__dirname, '/dist');
 
 const sequelize = new Sequelize(config.databaseUrl, {});
 
@@ -52,6 +55,10 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(loggerMiddleware);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(buildPath, 'index.html'));
+});
 app.get('/ping', (_req, res) => {
   res.send('pong');
 });
