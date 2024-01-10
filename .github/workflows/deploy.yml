@@ -36,6 +36,8 @@ jobs:
       - name: Zip backend
         run: |
           cd server/build
+          pwd
+          dir
           zip -r ../backend.zip .
       - run: unzip -l backend.zip
       - name: Install AWS Elastic Beanstalk CLI
