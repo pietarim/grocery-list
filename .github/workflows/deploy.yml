@@ -27,11 +27,15 @@ jobs:
           cd server
           npm install
           npm run build
-          cp -R ../client/dist .
+          cd build
+          cp -R ../../client/dist .
+          cp -R ../packege.json .
+          cp -R ../package-lock.json .
+          cp -R ../images .
 
       - name: Zip backend
         run: |
-          cd server
+          cd server/build
           zip -r ../backend.zip .
       - run: unzip -l backend.zip
       - name: Install AWS Elastic Beanstalk CLI
