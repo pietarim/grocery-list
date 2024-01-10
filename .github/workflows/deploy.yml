@@ -30,7 +30,9 @@ jobs:
           cp -R ../client/dist .
 
       - name: Zip backend
-        run: zip -r backend.zip .
+        run: |
+          cd server
+          zip -r ../backend.zip .
 
       - name: Install AWS Elastic Beanstalk CLI
         run: pip install awsebcli
