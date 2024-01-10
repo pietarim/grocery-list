@@ -51,6 +51,6 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: 'Grocery-app'
           environment_name: 'Grocery-app-env'
-          version_label: 'deploy-${{ github.run_number }}'
+          version_label: 'real_version_deploy-${{ github.run_number }}'
           region: 'eu-north-1'
           deployment_package: 'backend.zip'
