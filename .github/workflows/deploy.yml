@@ -32,6 +32,10 @@ jobs:
           cp -R ../package.json .
           cp -R ../package-lock.json .
           cp -R ../images .
+          cd dist
+          dir
+          cd assets
+          dir
 
       - name: Zip backend
         run: |
