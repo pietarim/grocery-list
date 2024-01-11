@@ -38,13 +38,13 @@ jobs:
           cd server/build
           pwd
           dir
-          zip -r ../backend.zip .
-      - name: unzip process
-        run: |
-          cd server
-          pwd
-          dir
-          unzip -l backend.zip
+          zip -r ../../backend.zip .
+      #  - name: unzip process
+      #    run: |
+      #      cd server
+      #      pwd
+      #      dir
+      #      unzip -l backend.zip
       #- name: Install AWS Elastic Beanstalk CLI
       #  run: pip install awsebcli
 
