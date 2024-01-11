@@ -39,8 +39,11 @@ jobs:
           pwd
           dir
           zip -r ../../backend.zip .
+<<<<<<< HEAD
           cd ../..
           dir
+=======
+>>>>>>> b0a72fd3db15c19673e7b780ef3336be8979aa42
       #  - name: unzip process
       #    run: |
       #      cd server
