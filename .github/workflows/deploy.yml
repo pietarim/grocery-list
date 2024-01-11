@@ -45,6 +45,10 @@ jobs:
           zip -r ../../backend.zip .
           cd ../..
           dir
+
+      -name: unzip process
+       run: unzip -l backend.zip
+
       #  - name: unzip process
       #    run: |
       #      cd server
