@@ -46,7 +46,7 @@ jobs:
           cd ../..
           dir
 
-      -name: unzip process
+      - name: unzip process
         run: unzip -l backend.zip
 
       #  - name: unzip process
