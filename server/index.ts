@@ -16,6 +16,7 @@ app.use(cookieParser());
 const port = config.port;
 
 const buildPath = path.join(__dirname, '/dist');
+app.use(express.static(buildPath));
 
 const sequelize = new Sequelize(config.databaseUrl, {});
 
