@@ -4,8 +4,10 @@ import { useAuth } from './useAuth';
 export const useAxios = () => {
   const { token, setToken } = useAuth();
 
+  const baseURL = process.env.REACT_APP_API_URI || 'http://localhost:3001';
+
   const axiosInstance = axios.create({
-    baseURL: 'http://localhost:3001/api',
+    baseURL
   });
 
   if (token) {
@@ -14,7 +16,7 @@ export const useAxios = () => {
 
   const refreshAccessToken = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/auth/access-token', { withCredentials: true });
+      const response = await axios.get(`${baseURL}/auth/access-token`, { withCredentials: true });
       const newAccessToken = response.data;
       setToken({ token: newAccessToken.token, username: newAccessToken.username, id: newAccessToken.id });
       return newAccessToken.token;

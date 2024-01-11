@@ -5,6 +5,7 @@ import { addProduct } from '../redux/modules/shoppingCart';
 import { useDispatch } from 'react-redux';
 import { useNotification } from '../hooks/useNotofication';
 import { Item, DbRecipe } from '../types';
+import { base_url } from '../config';
 
 interface RecipeProps {
   recipe: DbRecipe;
@@ -41,7 +42,7 @@ const Recipe = ({ recipe, setDetailedRecipe }: RecipeProps) => {
             <Image
               objectFit='cover'
               maxW={{ base: '100%', sm: '200px' }}
-              src={`http://localhost:3001/api/images/${recipe.imageUri}`}
+              src={`${base_url}/images/${recipe.imageUri}`}
               alt={recipe.name}
             />
             <Text style={{ margin: '12px' }} noOfLines={3}>

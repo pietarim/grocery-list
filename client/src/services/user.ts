@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { base_url } from '../config';
 
-const baseUrl = 'http://localhost:3001';
+const baseUrl = base_url;
 
 interface Credentials {
   username: string;
@@ -8,12 +9,12 @@ interface Credentials {
 }
 
 export const login = async (credentials: Credentials) => {
-  const response = await axios.post(`${baseUrl}/api/auth/login`, credentials, { withCredentials: true });
+  const response = await axios.post(`${baseUrl}/auth/login`, credentials, { withCredentials: true });
   return response.data;
 };
 
 export const register = async (credentials: Credentials) => {
   console.log('axios running');
-  const response = await axios.post(`${baseUrl}/api/auth/register`, credentials);
+  const response = await axios.post(`${baseUrl}/auth/register`, credentials);
   return response.data;
 };

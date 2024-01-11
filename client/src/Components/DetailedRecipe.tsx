@@ -5,6 +5,7 @@ import { useAxios } from '../hooks/useAxios';
 import { useAuth } from '../hooks/useAuth';
 import { addProduct } from '../redux/modules/shoppingCart';
 import { DbRecipe } from '../types';
+import { base_url } from '../config';
 
 interface DetailedRecipeProps {
   detailedRecipe: DbRecipe | null;
@@ -73,7 +74,7 @@ const DetailedRecipe = ({ detailedRecipe, setDetailedRecipe, isMobile, recipe, s
                 <Image
                   objectFit='cover'
                   maxW={{ base: '100%', sm: '200px' }}
-                  src={`http://localhost:3001/api/images/${detailedRecipe.imageUri}`}
+                  src={`${base_url}/images/${detailedRecipe.imageUri}`}
                   alt={detailedRecipe.name}
                 />
                 <Card minW='175px'>
@@ -113,7 +114,7 @@ const DetailedRecipe = ({ detailedRecipe, setDetailedRecipe, isMobile, recipe, s
   return (
     <Card>
       <CardBody>
-        <Image src={`http://localhost:3001/api/images/${detailedRecipe.imageUri}`} alt={detailedRecipe.name} />
+        <Image src={`${base_url}/images/${detailedRecipe.imageUri}`} alt={detailedRecipe.name} />
         <Heading>{detailedRecipe.name}</Heading>
         <Text>{detailedRecipe.description}</Text>
         {detailedRecipe.item.map((i, index) => (
