@@ -14,7 +14,6 @@ export const login = async (credentials: Credentials) => {
 };
 
 export const register = async (credentials: Credentials) => {
-  console.log('axios running');
   const response = await axios.post(`${baseUrl}/auth/register`, credentials);
   return response.data;
 };
