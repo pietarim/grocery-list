@@ -17,6 +17,7 @@ jobs:
 
       - name: Build frontend
         run: |
+          printenv
           cd client
           echo ${{ env.VITE_API_URI }}
           echo "VITE_API_URI=${{ env.VITE_API_URI }}" > .env.production
