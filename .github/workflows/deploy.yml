@@ -18,15 +18,6 @@ jobs:
       - name: Set env variables
         run: echo "NODE_ENV=production" >> $GITHUB_ENV
 
-      - name: Build frontend
-        env:
-          VITE_API_URL: 'http://grocery-app-env.eba-mnqkfh9i.eu-north-1.elasticbeanstalk.com/api'
-        run: |
-          cd client
-          echo 'install next'
-          npm install
-          echo 'build next'
-          npm run build
       - name: Build backend
         run: |
           pwd

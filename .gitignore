@@ -4,4 +4,4 @@ dev-notes.txt
 /server/build/
 /server/.env.production
 .env.development
-dist/
+client/dist/
