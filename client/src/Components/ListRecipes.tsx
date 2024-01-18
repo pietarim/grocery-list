@@ -186,10 +186,8 @@ const ListRecipes = ({ isMobile }: ListRecipesProps) => {
               </p>
             }
           >
-            {recipe.map((recipe: DbRecipe) => (
-              <>
-                <Recipe recipe={recipe} setDetailedRecipe={setDetailedRecipe} />
-              </>
+            {recipe.length && recipe.map((recipe: DbRecipe) => (
+              <Recipe key={recipe.id} recipe={recipe} setDetailedRecipe={setDetailedRecipe} />
             ))}
           </InfiniteScroll>}
       </div>

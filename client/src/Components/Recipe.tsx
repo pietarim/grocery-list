@@ -27,6 +27,7 @@ const Recipe = ({ recipe, setDetailedRecipe }: RecipeProps) => {
 
   return (
     <Card
+      key={recipe.id}
       direction={{ base: 'column', sm: 'row' }}
       overflow='hidden'
       variant='outline'
@@ -50,7 +51,7 @@ const Recipe = ({ recipe, setDetailedRecipe }: RecipeProps) => {
             </Text>
             <Card style={{ backgroundColor: '#e6f9ff' }} variant='elevated' minW='175px'>
               <Text as='b' style={{ borderBottom: '1px solid #002633' }}>Incredients:</Text>
-              {recipe.item.map((i: Item, index: number) => (
+              {recipe.item.length && recipe.item.map((i: Item, index: number) => (
                 <Text key={index} noOfLines={3}>
                   {i.name}
                 </Text>

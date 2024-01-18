@@ -73,13 +73,25 @@ const CreateRecipe = () => {
 
   useEffect(() => {
     const getItems = async () => {
-      const itemsQuery = await get('/items');
-      const arr = itemsQuery.data;
-      const initialHiddenCategoryList = arr.map((item: DbItem) => item.category);
-      setHiddenCategoryList(initialHiddenCategoryList);
-      setOptions(arr);
-      setVisibleData(arr);
-      handleVisibleData(initialHiddenCategoryList, arr);
+      try {
+        const itemsQuery = await get('/items');
+        const arr = itemsQuery.data;
+        console.log(arr); // TODO remove
+        if (!arr.length) {
+          console.log('no items');
+          return;
+        } else if (arr.length) {
+          console.log('arr.length:', arr.length);
+          const initialHiddenCategoryList = arr.map((item: DbItem) => item.category);
+          setHiddenCategoryList(initialHiddenCategoryList);
+          setOptions(arr);
+          setVisibleData(arr);
+          handleVisibleData(initialHiddenCategoryList, arr);
+        }
+      }
+      catch (e) {
+        console.log(e);
+      }
     };
     getItems();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -151,7 +163,7 @@ const CreateRecipe = () => {
       return (
         <>
           <List>
-            {itemArray.map((item, id) => {
+            {itemArray.length && itemArray.map((item, id) => {
               return <ListItem
                 style={{ backgroundColor: bgColor, margin: '3px', borderRadius: '20px', display: 'inline-block', padding: '4px' }}
                 key={id}>{item.name} {item.amount}
@@ -321,7 +333,7 @@ const CreateRecipe = () => {
         </Card>
       </Flex >
       <Wrap {...group}>
-        {visibleData.map((value, i) => {
+        {visibleData.length && visibleData.map((value, i) => {
           return (
             <Wrap key={i}>
               <Box
@@ -337,7 +349,7 @@ const CreateRecipe = () => {
               >
                 {value.category}
               </Box>
-              {value.items.map((item: WorkMemryItem) => {
+              {value.items.length && value.items.map((item: WorkMemryItem) => {
                 const radio = getRadioProps({ value: item.id.toString() });
                 return (
                   <RadioCard key={item.id.toString()} {...radio}>

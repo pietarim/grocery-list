@@ -56,10 +56,6 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(loggerMiddleware);
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(buildPath, 'index.html'));
-});
 app.get('/ping', (_req, res) => {
   res.send('pong');
 });
@@ -71,6 +67,10 @@ app.use('/api/items', itemRouter);
 app.use('/api/recipeLikes', recipeRouter);
 app.use('/api/auth', authRouter);
 app.use(errorHandler);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(buildPath, 'index.html'));
+});
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

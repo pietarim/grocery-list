@@ -15,6 +15,9 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Set env variables
+        run: echo "NODE_ENV=production" >> $GITHUB_ENV
+
       - name: Build frontend
         run: |
           cd client

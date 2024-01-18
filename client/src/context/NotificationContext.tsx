@@ -23,7 +23,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode; }) => 
     setNotification({ message, type });
     setTimeout(() => {
       setNotification(null);
-    }, 30000);
+    }, 3000);
   }, []);
 
   return (
