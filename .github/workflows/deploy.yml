@@ -21,10 +21,9 @@ jobs:
       - name: Build frontend
         run: |
           cd client
-          echo "VITE_API_URI=${{ env.VITE_API_URI }}" > .env.production
-          echo ${{ env.VITE_API_URI }}
-          printenv
+          echo 'install next'
           npm install
+          echo 'build next'
           npm run build
       - name: Build backend
         run: |

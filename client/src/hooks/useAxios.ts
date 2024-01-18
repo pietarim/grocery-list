@@ -4,7 +4,7 @@ import { useAuth } from './useAuth';
 export const useAxios = () => {
   const { token, setToken } = useAuth();
 
-  const baseURL = import.meta.env.VITE_API_URI || 'http://localhost:3001';
+  const baseURL = import.meta.env.VITE_API_URI || 'http://localhost:3001/api';
 
   const axiosInstance = axios.create({
     baseURL

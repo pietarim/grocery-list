@@ -5,7 +5,7 @@ import { useAxios } from '../hooks/useAxios';
 import { useAuth } from '../hooks/useAuth';
 import { addProduct } from '../redux/modules/shoppingCart';
 import { DbRecipe } from '../types';
-import { base_url } from '../config';
+/* import { base_url } from '../config'; */
 
 interface DetailedRecipeProps {
   detailedRecipe: DbRecipe | null;
@@ -17,6 +17,8 @@ interface DetailedRecipeProps {
 }
 
 const DetailedRecipe = ({ detailedRecipe, setDetailedRecipe, isMobile, recipe, setRecipe }: DetailedRecipeProps) => {
+
+  const base_url = import.meta.env.VITE_API_URI || 'http://localhost:30001/api';
 
   const { put, deleteReq } = useAxios();
   const { token } = useAuth();
