@@ -20,16 +20,13 @@ jobs:
 
       - name: Build backend
         run: |
-          pwd
-          dir
+          echo "Go to /server"
           cd server
+          echo "Install dependencies"
           npm install
+          echo "Build backend"
           npm run build
           cd build
-          cp -R ../../client/dist .
-          cp -R ../package.json .
-          cp -R ../package-lock.json .
-          cp -R ../images .
           cd dist
           dir
           cd assets
