@@ -25,6 +25,7 @@ jobs:
           echo "Install dependencies"
           npm install
           echo "Build backend"
+          ls node_modules/@types
           npm run build
           cd build
           cd dist
