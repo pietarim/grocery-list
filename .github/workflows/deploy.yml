@@ -15,17 +15,12 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Set env variables
-        run: echo "NODE_ENV=production" >> $GITHUB_ENV
-
       - name: Build backend
         run: |
           echo "Go to /server"
           cd server
-          echo "Install prod dependencies"
-          npm install --only=production
-          echo "Install dev dependencies"
-          npm install --only=dev
+          echo "Install dependencies"
+          npm install
           echo "Build backend"
           ls node_modules/@types
           npm run build
