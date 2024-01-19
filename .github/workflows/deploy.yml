@@ -23,7 +23,7 @@ jobs:
           echo "Go to /server"
           cd server
           echo "Install prod dependencies"
-          npm install --production
+          npm install --only=production
           echo "Install dev dependencies"
           npm install --only=dev
           echo "Build backend"
