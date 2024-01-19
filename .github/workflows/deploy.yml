@@ -25,6 +25,8 @@ jobs:
           ls node_modules/@types
           npm run build
           cp -R dist build/
+          cp package.json build/
+          cp package-lock.json build/
           cd build
           dir
 
