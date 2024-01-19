@@ -24,10 +24,8 @@ jobs:
           echo "Build backend"
           ls node_modules/@types
           npm run build
+          cp -R dist/* build/
           cd build
-          cd dist
-          dir
-          cd assets
           dir
 
       - name: Zip backend
