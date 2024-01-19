@@ -24,7 +24,7 @@ jobs:
           echo "Build backend"
           ls node_modules/@types
           npm run build
-          cp -R dist/* build/
+          cp -R dist/* build/dist/
           cd build
           dir
 
