@@ -22,8 +22,10 @@ jobs:
         run: |
           echo "Go to /server"
           cd server
-          echo "Install dependencies"
-          npm install
+          echo "Install prod dependencies"
+          npm install --production
+          echo "Install dev dependencies"
+          npm install --only=dev
           echo "Build backend"
           ls node_modules/@types
           npm run build
